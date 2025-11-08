@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://cup3o2rw2fqu2"]
+[gd_scene load_steps=8 format=3 uid="uid://cup3o2rw2fqu2"]
 
-[ext_resource type="PackedScene" uid="uid://dx7yk8ce7ua32" path="res://Mountain Cabin.glb" id="1_ig7tw"]
+[ext_resource type="PackedScene" uid="uid://bok8bs7h6v8l3" path="res://Map1.tscn" id="2_r0du0"]
+[ext_resource type="PackedScene" uid="uid://dbf5a5xch38l7" path="res://Player.tscn" id="2_uu6xs"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_glv2v"]
 
@@ -27,11 +28,8 @@ volumetric_fog_albedo = Color(0.6476397, 0.8462309, 0.95558697, 1)
 
 [node name="Main" type="Node3D"]
 
-[node name="Mountain Cabin" parent="." instance=ExtResource("1_ig7tw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.622367, 0.3414656, 4.4504285)
-
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(0.9798708, -0.04978367, 0.19332607, 0.0127429105, 0.98202956, 0.18829654, -0.19922602, -0.18204272, 0.9628964, 2.2694635, 2.6785367, 7.69081)
+transform = Transform3D(0.9248983, -0.083140455, 0.37101313, -0.018138383, 0.96504027, 0.26147336, -0.37978157, -0.24856587, 0.8910561, 2.2694635, 4.7858458, 9.361512)
 fov = 67.4
 near = 0.017
 
@@ -41,3 +39,9 @@ environment = SubResource("Environment_uu6xs")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.5165333, 0.8562671, 0, -0.8562671, 0.5165333, 0, 0, 0)
 shadow_enabled = true
+
+[node name="CharacterBody3D" parent="." instance=ExtResource("2_uu6xs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9762042, 4.920635)
+
+[node name="Map" parent="." instance=ExtResource("2_r0du0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.023386478, 0.98918676, 4.774445)
