@@ -1,0 +1,47 @@
+[gd_scene load_steps=8 format=3 uid="uid://cup3o2rw2fqu2"]
+
+[ext_resource type="PackedScene" uid="uid://bok8bs7h6v8l3" path="res://Map1.tscn" id="2_r0du0"]
+[ext_resource type="PackedScene" uid="uid://dbf5a5xch38l7" path="res://Player.tscn" id="2_uu6xs"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_glv2v"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_uu6xs"]
+noise = SubResource("FastNoiseLite_glv2v")
+seamless = true
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_glv2v"]
+sky_top_color = Color(0.6833625, 0.8510848, 0.97712964, 1)
+sky_energy_multiplier = 1.35
+sky_cover = SubResource("NoiseTexture2D_uu6xs")
+
+[sub_resource type="Sky" id="Sky_glv2v"]
+sky_material = SubResource("ProceduralSkyMaterial_glv2v")
+
+[sub_resource type="Environment" id="Environment_uu6xs"]
+background_mode = 2
+sky = SubResource("Sky_glv2v")
+sky_custom_fov = 5.1
+ambient_light_source = 3
+ambient_light_color = Color(0.50490636, 0.79795915, 0.946606, 1)
+volumetric_fog_enabled = true
+volumetric_fog_albedo = Color(0.6476397, 0.8462309, 0.95558697, 1)
+
+[node name="Main" type="Node3D"]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.9248983, -0.083140455, 0.37101313, -0.018138383, 0.96504027, 0.26147336, -0.37978157, -0.24856587, 0.8910561, 2.2694635, 4.7858458, 9.361512)
+fov = 67.4
+near = 0.017
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_uu6xs")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.5165333, 0.8562671, 0, -0.8562671, 0.5165333, 0, 0, 0)
+shadow_enabled = true
+
+[node name="CharacterBody3D" parent="." instance=ExtResource("2_uu6xs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9762042, 4.920635)
+
+[node name="Map" parent="." instance=ExtResource("2_r0du0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.023386478, 0.98918676, 4.774445)

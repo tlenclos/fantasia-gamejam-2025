@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://dbf5a5xch38l7"]
+
+[ext_resource type="Script" uid="uid://segbp6rkd2dd" path="res://Player.gd" id="1_xhfnw"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_0rwas"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_0rwas"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0rwas"]
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_xhfnw")
+
+[node name="Body" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.5, 0)
+mesh = SubResource("CapsuleMesh_0rwas")
+skeleton = NodePath("../CollisionShape3D")
+
+[node name="Eye1" type="MeshInstance3D" parent="Body"]
+transform = Transform3D(0.48000002, 0, 0, 0, 0.5, 0, 0, 0, 0.3799454, 0.21259803, 0.42244935, 0.4177671)
+mesh = SubResource("SphereMesh_0rwas")
+skeleton = NodePath("../..")
+
+[node name="Eye2" type="MeshInstance3D" parent="Body"]
+transform = Transform3D(0.48000002, 0, 0, 0, 0.5, 0, 0, 0, 0.3799454, -0.32160717, 0.42244935, 0.4177671)
+mesh = SubResource("SphereMesh_0rwas")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.5, 0)
+shape = SubResource("CapsuleShape3D_0rwas")
