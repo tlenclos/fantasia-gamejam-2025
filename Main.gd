@@ -22,6 +22,7 @@ func _on_host_button_pressed() -> void:
 func _on_join_button_pressed() -> void:
 	main_menu.hide()
 	var host = "localhost"
+	# TODO Export dedicated server but allow to play locally in debug
 	if server_address_input.text != "":
 		host = server_address_input.text
 
@@ -30,6 +31,7 @@ func _on_join_button_pressed() -> void:
 	multiplayer.multiplayer_peer = enet_peer
 
 func add_player(peer_id):
+	# TODO Add unique spawn points for each players, make them visible (snowman ?)
 	var player = Player.instantiate()
 	player.name = str(peer_id)
 	player.position = spawn_position
