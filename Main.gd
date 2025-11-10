@@ -20,7 +20,12 @@ func _on_host_button_pressed() -> void:
 
 func _on_join_button_pressed() -> void:
 	main_menu.hide()
-	enet_peer.create_client("localhost", PORT)
+	var host = "localhost"
+	if server_address_input.text != "":
+		host = server_address_input.text
+
+	print("Connected to ", host)
+	enet_peer.create_client(server_address_input.text, PORT)
 	multiplayer.multiplayer_peer = enet_peer
 
 func add_player(peer_id):
