@@ -1,12 +1,26 @@
-[gd_scene load_steps=5 format=3 uid="uid://dbf5a5xch38l7"]
+[gd_scene load_steps=8 format=3 uid="uid://dbf5a5xch38l7"]
 
 [ext_resource type="Script" uid="uid://segbp6rkd2dd" path="res://Player.gd" id="1_xhfnw"]
+[ext_resource type="PackedScene" uid="uid://div5xhfmjnms4" path="res://Bucket.glb" id="2_kpjcp"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_0rwas"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_0rwas"]
 
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_kne1u"]
+
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0rwas"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_kpjcp"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:scale")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath("Body:rotation")
+properties/2/spawn = true
+properties/2/replication_mode = 1
 
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_xhfnw")
@@ -26,6 +40,17 @@ transform = Transform3D(0.48000002, 0, 0, 0, 0.5, 0, 0, 0, 0.3799454, -0.3216071
 mesh = SubResource("SphereMesh_0rwas")
 skeleton = NodePath("../..")
 
+[node name="Arm" type="MeshInstance3D" parent="Body"]
+transform = Transform3D(0.12749997, 9.6530695e-09, -0.15588456, 0.22083645, -5.5732006e-09, 0.08999999, -3.1554436e-30, -0.25499994, -7.86805e-09, -0.57837325, 0, 0.16660643)
+mesh = SubResource("CapsuleMesh_kne1u")
+
+[node name="Bucket" parent="Body" instance=ExtResource("2_kpjcp")]
+physics_interpolation_mode = 2
+transform = Transform3D(5.07, 0, 0, 0, 5.07, 0, 0, 0, 5.07, -0.5641046, -0.21475846, 0.56993526)
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.5, 0)
 shape = SubResource("CapsuleShape3D_0rwas")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_kpjcp")

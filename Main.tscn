@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://cup3o2rw2fqu2"]
 
-[ext_resource type="PackedScene" uid="uid://bok8bs7h6v8l3" path="res://Map1.tscn" id="2_r0du0"]
-[ext_resource type="PackedScene" uid="uid://dbf5a5xch38l7" path="res://Player.tscn" id="2_uu6xs"]
+[ext_resource type="Script" uid="uid://7laplj6m1gfl" path="res://Main.gd" id="1_r0du0"]
+[ext_resource type="PackedScene" uid="uid://cx8aq5v45lu8s" path="res://Map2.tscn" id="2_uu6xs"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_glv2v"]
 
@@ -27,9 +27,10 @@ volumetric_fog_enabled = true
 volumetric_fog_albedo = Color(0.6476397, 0.8462309, 0.95558697, 1)
 
 [node name="Main" type="Node3D"]
+script = ExtResource("1_r0du0")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(0.9248983, -0.083140455, 0.37101313, -0.018138383, 0.96504027, 0.26147336, -0.37978157, -0.24856587, 0.8910561, 2.2694635, 4.7858458, 9.361512)
+transform = Transform3D(1, 0, 0, 0, 0.7981626, 0.6024421, 0, -0.6024421, 0.7981626, -0.49037743, 12.110853, 19.44532)
 fov = 67.4
 near = 0.017
 
@@ -40,8 +41,53 @@ environment = SubResource("Environment_uu6xs")
 transform = Transform3D(1, 0, 0, 0, 0.5165333, 0.8562671, 0, -0.8562671, 0.5165333, 0, 0, 0)
 shadow_enabled = true
 
-[node name="CharacterBody3D" parent="." instance=ExtResource("2_uu6xs")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9762042, 4.920635)
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="Map" parent="." instance=ExtResource("2_r0du0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.023386478, 0.98918676, 4.774445)
+[node name="MainMenu" type="PanelContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 172.0
+offset_top = 126.0
+offset_right = -172.0
+offset_bottom = -126.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MainMenu"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MainMenu/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="Label" type="Label" parent="CanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Menu"
+horizontal_alignment = 1
+
+[node name="HostButton" type="Button" parent="CanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Host"
+
+[node name="JoinButton" type="Button" parent="CanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Join"
+
+[node name="ServerAddressInput" type="LineEdit" parent="CanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+placeholder_text = "Enter address to join"
+alignment = 1
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://dbf5a5xch38l7")
+spawn_path = NodePath("..")
+
+[node name="Map_01" parent="." instance=ExtResource("2_uu6xs")]
+
+[connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/JoinButton" to="." method="_on_join_button_pressed"]
