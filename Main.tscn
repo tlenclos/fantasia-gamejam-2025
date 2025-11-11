@@ -14,6 +14,12 @@ script = ExtResource("4_lgr22")
 script = ExtResource("5_3dxm6")
 near = 0.541
 metadata/_custom_type_script = "uid://b8hhnqsugykly"
+[gd_scene load_steps=11 format=3 uid="uid://cup3o2rw2fqu2"]
+
+[ext_resource type="Script" uid="uid://7laplj6m1gfl" path="res://Main.gd" id="1_r0du0"]
+[ext_resource type="PackedScene" uid="uid://cx8aq5v45lu8s" path="res://Map2.tscn" id="2_uu6xs"]
+[ext_resource type="Script" uid="uid://c4fkky2tj1ji5" path="res://scripts/snow_spawner.gd" id="3_cm0pq"]
+[ext_resource type="PackedScene" uid="uid://nyqci35mlo61" path="res://scenes/Snowflake.tscn" id="4_fos0i"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_glv2v"]
 
@@ -53,6 +59,7 @@ properties/0/replication_mode = 1
 properties/1/path = NodePath("StartGameCircle/StartGameArea:process_mode")
 properties/1/spawn = true
 properties/1/replication_mode = 1
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_cm0pq"]
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1_r0du0")
@@ -216,3 +223,16 @@ replication_config = SubResource("SceneReplicationConfig_3dxm6")
 
 [connection signal="pressed" from="MenuGroup/MainMenu/MarginContainer/VBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
 [connection signal="pressed" from="MenuGroup/MainMenu/MarginContainer/VBoxContainer/JoinButton" to="." method="_on_join_button_pressed"]
+[node name="SnowSpawner" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.4519796, 0)
+script = ExtResource("3_cm0pq")
+snowflake_scene = ExtResource("4_fos0i")
+
+[node name="SnowFlake" parent="SnowSpawner" instance=ExtResource("4_fos0i")]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -3.4998355, -6.9094987, 1.1061153)
+mass = 0.001
+physics_material_override = SubResource("PhysicsMaterial_cm0pq")
+gravity_scale = -8.0
+
+[connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/JoinButton" to="." method="_on_join_button_pressed"]
