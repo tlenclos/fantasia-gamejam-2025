@@ -21,7 +21,6 @@ func _ready() -> void:
 	
 	if not is_multiplayer_authority(): return
 	
-	# TODO Prevent color to be the same as the other players
 	color = playersColor[randi() % playersColor.size()]
 
 func _enter_tree() -> void:
@@ -77,7 +76,7 @@ func set_color(new_color: Color) -> void:
 
 func _apply_color() -> void:
 	# this can be called before _ready() during replication by MultiplayerSpawner
-	if not body:
+	if not body or OS.has_feature("dedicated_server"):
 		return
 
 	var material = body.get_surface_override_material(0)
