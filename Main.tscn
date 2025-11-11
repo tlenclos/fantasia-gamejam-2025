@@ -41,9 +41,9 @@ environment = SubResource("Environment_uu6xs")
 transform = Transform3D(1, 0, 0, 0, 0.5165333, 0.8562671, 0, -0.8562671, 0.5165333, 0, 0, 0)
 shadow_enabled = true
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="MenuGroup" type="CanvasLayer" parent="."]
 
-[node name="MainMenu" type="PanelContainer" parent="CanvasLayer"]
+[node name="MainMenu" type="PanelContainer" parent="MenuGroup"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -54,40 +54,65 @@ offset_bottom = -126.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MainMenu"]
+[node name="MarginContainer" type="MarginContainer" parent="MenuGroup/MainMenu"]
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MainMenu/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MenuGroup/MainMenu/MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 15
 
-[node name="Label" type="Label" parent="CanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MenuGroup/MainMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Menu"
 horizontal_alignment = 1
 
-[node name="HostButton" type="Button" parent="CanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
+[node name="HostButton" type="Button" parent="MenuGroup/MainMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Host"
 
-[node name="JoinButton" type="Button" parent="CanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
+[node name="JoinButton" type="Button" parent="MenuGroup/MainMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Join"
 
-[node name="ServerAddressInput" type="LineEdit" parent="CanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
+[node name="ServerAddressInput" type="LineEdit" parent="MenuGroup/MainMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2
 placeholder_text = "Enter address to join"
 alignment = 1
+
+[node name="Spawn1" type="Marker3D" parent="." groups=["SpawnPositions"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.40238, 0.1541771, -2.1104074)
+gizmo_extents = 1.0
+
+[node name="Spawn2" type="Marker3D" parent="." groups=["SpawnPositions"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.40238, 0.1541771, 7.466787)
+gizmo_extents = 1.0
+
+[node name="Spawn3" type="Marker3D" parent="." groups=["SpawnPositions"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.00276, 0.1541771, 9.322578)
+gizmo_extents = 1.0
+
+[node name="Spawn4" type="Marker3D" parent="." groups=["SpawnPositions"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.00276, 0.1541771, -0.6159096)
+gizmo_extents = 1.0
+
+[node name="Spawn5" type="Marker3D" parent="." groups=["SpawnPositions"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.920147, 0.1541771, -0.6159096)
+gizmo_extents = 1.0
+
+[node name="Spawn6" type="Marker3D" parent="." groups=["SpawnPositions"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.920147, 0.1541771, 9.512919)
+gizmo_extents = 1.0
+
+[node name="Map_01" parent="." instance=ExtResource("2_uu6xs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.012367725, 0.02448845, -0.02610302)
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("uid://dbf5a5xch38l7")
 spawn_path = NodePath("..")
 
-[node name="Map_01" parent="." instance=ExtResource("2_uu6xs")]
-
-[connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/JoinButton" to="." method="_on_join_button_pressed"]
+[connection signal="pressed" from="MenuGroup/MainMenu/MarginContainer/VBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
+[connection signal="pressed" from="MenuGroup/MainMenu/MarginContainer/VBoxContainer/JoinButton" to="." method="_on_join_button_pressed"]

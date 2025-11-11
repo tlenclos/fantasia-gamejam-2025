@@ -5,9 +5,10 @@ const Player = preload("res://Player.tscn")
 var enet_peer = ENetMultiplayerPeer.new()
 var spawn_position = Vector3(0, 4, 5)
 var players: Dictionary[int, Player] = {}
+var used_spawn_positions: Array[Vector3] = []
 
-@onready var main_menu: PanelContainer = $CanvasLayer/MainMenu
-@onready var server_address_input: LineEdit = $CanvasLayer/MainMenu/MarginContainer/VBoxContainer/ServerAddressInput
+@onready var main_menu: PanelContainer = $MenuGroup/MainMenu
+@onready var server_address_input: LineEdit = $MenuGroup/MainMenu/MarginContainer/VBoxContainer/ServerAddressInput
 
 func _on_host_button_pressed() -> void:
 	main_menu.hide()
@@ -31,15 +32,39 @@ func _on_join_button_pressed() -> void:
 	multiplayer.multiplayer_peer = enet_peer
 
 func add_player(peer_id):
-	# TODO Add unique spawn points for each players, make them visible (snowman ?)
+	# Server chose a spawn position and tells all clients
+	if multiplayer.is_server():
+		var spawn_pos = get_spawn_position()
+		used_spawn_positions.append(spawn_pos)
+		spawn_player.rpc(peer_id, spawn_pos)
+
+@rpc("any_peer", "call_local")
+func spawn_player(peer_id: int, spawn_pos: Vector3):
 	var player = Player.instantiate()
 	player.name = str(peer_id)
-	player.position = spawn_position
+	player.position = spawn_pos
+	
 	add_child(player)
 	players[peer_id] = player
 
 func remove_player(peer_id):
-	for player_peer_id in players:
-		if player_peer_id == peer_id:
-			remove_child(players[player_peer_id])
-			players.erase(str(player_peer_id))
+	if players.has(peer_id):
+		var player = players[peer_id]
+		
+		# Free up spawn position on server
+		if multiplayer.is_server():
+			used_spawn_positions.erase(player.position)
+		
+		remove_child(player)
+		players.erase(peer_id)
+			
+func get_spawn_position() -> Vector3:
+	var spawns = get_tree().get_nodes_in_group("SpawnPositions")
+	if spawns.is_empty():
+		return Vector3(0, 4, 5) # Fallback
+	
+	for spawn in spawns:
+		if not used_spawn_positions.has(spawn.position):
+			return spawn.position
+	
+	return spawns.pick_random().position
