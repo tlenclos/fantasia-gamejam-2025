@@ -29,9 +29,10 @@ WORKDIR /godotapp
 # Copy project folder from the context folder
 COPY . project/
 
-# Export pck file to be used by Godot
 WORKDIR /godotapp/project
-RUN godot --headless --export-pack "Server Linux" /godotapp/${GODOT_GAME_NAME}.pck
+RUN find . -name "*.blend" -delete && find . -name "*.blend.import" -delete || true
+
+RUN godot --headless --path . --export-pack "Server Linux" /godotapp/${GODOT_GAME_NAME}.pck --verbose
 
 WORKDIR /godotapp
 
