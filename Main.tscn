@@ -1,7 +1,19 @@
-[gd_scene load_steps=8 format=3 uid="uid://cup3o2rw2fqu2"]
+[gd_scene load_steps=14 format=3 uid="uid://cup3o2rw2fqu2"]
 
 [ext_resource type="Script" uid="uid://7laplj6m1gfl" path="res://Main.gd" id="1_r0du0"]
+[ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="2_fos0i"]
 [ext_resource type="PackedScene" uid="uid://cx8aq5v45lu8s" path="res://Map2.tscn" id="2_uu6xs"]
+[ext_resource type="Script" uid="uid://csjccrhj5wnx7" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="3_3dxm6"]
+[ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="4_lgr22"]
+[ext_resource type="Script" uid="uid://b8hhnqsugykly" path="res://addons/phantom_camera/scripts/resources/camera_3d_resource.gd" id="5_3dxm6"]
+
+[sub_resource type="Resource" id="Resource_trn2v"]
+script = ExtResource("4_lgr22")
+
+[sub_resource type="Resource" id="Resource_lgr22"]
+script = ExtResource("5_3dxm6")
+near = 0.541
+metadata/_custom_type_script = "uid://b8hhnqsugykly"
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_glv2v"]
 
@@ -30,9 +42,31 @@ volumetric_fog_albedo = Color(0.6476397, 0.8462309, 0.95558697, 1)
 script = ExtResource("1_r0du0")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.7981626, 0.6024421, 0, -0.6024421, 0.7981626, -0.49037743, 12.110853, 19.44532)
-fov = 67.4
-near = 0.017
+transform = Transform3D(1, 0, 0, 0, 0.73016226, 0.6832738, 0, -0.6832738, 0.73016226, 0, 20, 13.567)
+near = 0.541
+
+[node name="PhantomCameraHost" type="Node" parent="Camera3D"]
+process_priority = 300
+process_physics_priority = 300
+script = ExtResource("2_fos0i")
+metadata/_custom_type_script = "uid://bd046eokvcnu2"
+
+[node name="PhantomCamera3D" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.73016226, 0.6832738, 0, -0.6832738, 0.73016226, 0, 20, 13.567)
+top_level = true
+script = ExtResource("3_3dxm6")
+follow_mode = 3
+tween_resource = SubResource("Resource_trn2v")
+camera_3d_resource = SubResource("Resource_lgr22")
+follow_offset = Vector3(0, 4.005, 8.47)
+follow_damping = true
+follow_axis_lock = 1
+auto_follow_distance = true
+auto_follow_distance_min = 5.0
+auto_follow_distance_max = 15.0
+auto_follow_distance_divisor = 20.0
+look_at_damping = true
+metadata/_custom_type_script = "uid://csjccrhj5wnx7"
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_uu6xs")

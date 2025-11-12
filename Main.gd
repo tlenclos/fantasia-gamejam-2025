@@ -10,6 +10,7 @@ var host = "localhost"
 @onready var main_menu: PanelContainer = $MenuGroup/MainMenu
 @onready var server_address_input: LineEdit = $MenuGroup/MainMenu/MarginContainer/VBoxContainer/ServerAddressInput
 @onready var error_label: Label = $MenuGroup/MainMenu/MarginContainer/VBoxContainer/ErrorLabel
+@onready var phantom_camera_3d: PhantomCamera3D = $PhantomCamera3D
 
 func _ready() -> void:
 	if OS.has_feature("dedicated_server"):
@@ -74,6 +75,7 @@ func spawn_player(peer_id: int, spawn_pos: Vector3):
 	
 	add_child(player)
 	players[peer_id] = player
+	phantom_camera_3d.append_follow_targets(player)
 
 func remove_player(peer_id):
 	if players.has(peer_id):
