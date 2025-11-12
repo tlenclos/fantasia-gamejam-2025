@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM fedora:latest
+FROM --platform=linux/amd64 fedora:latest
 
 # Environment variables and parameters
 ARG GODOT_VERSION="4.5"
