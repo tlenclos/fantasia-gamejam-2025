@@ -17,8 +17,8 @@ RUN dnf install -y wayland-devel
 RUN dnf install -y fontconfig
 
 # Download Godot, version is set from environment variables
-ADD https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/${GODOT_FILE_NAME}.zip ./
-RUN mkdir -p ~/.cache \
+RUN wget https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/${GODOT_FILE_NAME}.zip \
+    && mkdir -p ~/.cache \
     && mkdir -p ~/.config/godot \
     && unzip ${GODOT_FILE_NAME}.zip \
     && mv ${GODOT_FILE_NAME} /usr/local/bin/godot \
