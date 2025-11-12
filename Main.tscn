@@ -80,8 +80,14 @@ text = "Join"
 
 [node name="ServerAddressInput" type="LineEdit" parent="MenuGroup/MainMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2
+text = "fantasia-gamejam-2025.thibaultlenclos.fr"
 placeholder_text = "Enter address to join"
 alignment = 1
+
+[node name="ErrorLabel" type="Label" parent="MenuGroup/MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.91356707, 0.18784529, 0.24959585, 1)
+horizontal_alignment = 1
 
 [node name="Spawn1" type="Marker3D" parent="." groups=["SpawnPositions"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.40238, 0.1541771, -2.1104074)
