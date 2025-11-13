@@ -3,20 +3,35 @@ extends Node3D
 const PORT = 9999
 const Player = preload("res://Player.tscn")
 var enet_peer = ENetMultiplayerPeer.new()
-var players: Dictionary[int, Player] = {}
 var used_spawn_positions: Array[Vector3] = []
 var host = "localhost"
+var isDedicatedServer = OS.has_feature("dedicated_server")
+var gameStarted = false
 
+@export var game_timer: int = 10
 @onready var main_menu: PanelContainer = $MenuGroup/MainMenu
+@onready var game_ui: CanvasLayer = $GameUIGroup
+@onready var game_ui_bottom_label: Label = $GameUIGroup/GameUI/MarginContainer/VBoxContainer/Label
 @onready var server_address_input: LineEdit = $MenuGroup/MainMenu/MarginContainer/VBoxContainer/ServerAddressInput
 @onready var error_label: Label = $MenuGroup/MainMenu/MarginContainer/VBoxContainer/ErrorLabel
 @onready var phantom_camera_3d: PhantomCamera3D = $PhantomCamera3D
+@onready var start_game_circle: MeshInstance3D = $StartGameCircle
+@onready var start_game_area: Area3D = $StartGameCircle/StartGameArea
 
 func _ready() -> void:
-	if OS.has_feature("dedicated_server"):
+	if isDedicatedServer:
 		print("Starting dedicated server on port ", PORT)
 		create_server()
 
+func _physics_process(_delta: float) -> void:
+#	if not is_multiplayer_authority() or isDedicatedServer:
+#		return
+	var all_players = get_all_players()
+	if not gameStarted and all_players.size() > 0 and start_game_area.get_overlapping_bodies().filter(func(body): return body is Player).size() == all_players.size():
+		start_game()
+		
+	# TODO Check win conditions here
+		
 func create_server() -> void:
 	var error = enet_peer.create_server(PORT)
 	if error != OK:
@@ -30,6 +45,7 @@ func create_server() -> void:
 func _on_host_button_pressed() -> void:
 	error_label.text = ""
 	main_menu.hide()
+	game_ui.show()
 	create_server()
 	add_player(multiplayer.get_unique_id())
 
@@ -52,11 +68,13 @@ func _on_join_button_pressed() -> void:
 func _on_connected_ok() -> void:
 	print("Successfully connected to server")
 	main_menu.hide()
+	game_ui.show()
 
 func _on_connected_fail(error) -> void:
 	print("Connection to server failed: ", error)
 	error_label.text = "Failed to connect to server: " + str(host)
 	main_menu.show()
+	game_ui.hide()
 	multiplayer.multiplayer_peer = null
 
 func add_player(peer_id):
@@ -72,18 +90,19 @@ func spawn_player(peer_id: int, spawn_pos: Vector3):
 	var player = Player.instantiate()
 	player.name = str(peer_id)
 	player.position = spawn_pos
+	player.add_to_group("Players")
 	
 	add_child(player)
-	players[peer_id] = player
-	phantom_camera_3d.append_follow_targets(player)
+	
+	if not isDedicatedServer:
+		phantom_camera_3d.append_follow_targets(player)
 
 func remove_player(peer_id):
-	if players.has(peer_id):
+	var player = get_player_by_peer_id(peer_id)
+	if player:
 		print('Player left ', peer_id)
-		var player = players[peer_id]
 		used_spawn_positions.erase(player.position)
 		remove_child(player)
-		players.erase(peer_id)
 			
 func get_spawn_position() -> Vector3:
 	var spawns = get_tree().get_nodes_in_group("SpawnPositions")
@@ -95,3 +114,32 @@ func get_spawn_position() -> Vector3:
 			return spawn.position
 	
 	return spawns.pick_random().position
+
+func start_game() -> void:
+	gameStarted = true
+	game_ui_bottom_label.text = "Construisez votre bonhomme de neige"
+	start_game_circle.hide()
+	start_game_area.set_process(false)
+	print('Start game')
+
+	for i in range(game_timer, 0, -1):
+		game_ui_bottom_label.text = "Temps restant : %ds" % i
+		await get_tree().create_timer(1).timeout
+		
+	end_game()
+
+func end_game() -> void:
+	gameStarted = false
+	game_ui_bottom_label.text = "La partie est terminée !"
+	start_game_circle.show()
+	start_game_area.set_process(true)
+	print("End game")
+
+func get_all_players() -> Array[Node]:
+	return get_tree().get_nodes_in_group("Players")
+
+func get_player_by_peer_id(peer_id: int) -> Player:
+	var player_node = get_node_or_null(str(peer_id))
+	if player_node and player_node is Player:
+		return player_node
+	return null

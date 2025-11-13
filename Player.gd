@@ -27,6 +27,7 @@ func _enter_tree() -> void:
 	set_multiplayer_authority(str(name).to_int())
 
 func _input(event: InputEvent) -> void:
+	if not is_multiplayer_authority(): return
 	if event is InputEventMouseButton and event.is_pressed():
 		grow()
 		

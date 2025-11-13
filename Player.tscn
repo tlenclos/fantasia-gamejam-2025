@@ -25,7 +25,7 @@ properties/3/path = NodePath(".:color")
 properties/3/spawn = true
 properties/3/replication_mode = 1
 
-[node name="Player" type="CharacterBody3D"]
+[node name="Player" type="CharacterBody3D" groups=["Players"]]
 script = ExtResource("1_xhfnw")
 
 [node name="Body" type="MeshInstance3D" parent="."]
