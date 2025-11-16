@@ -146,9 +146,17 @@ func end_game() -> void:
 	start_game_area.set_process(true)
 	print("End game")
 
-func add_snow_to_player(peer_id: int) -> void:
+@rpc("any_peer", "call_local")
+func add_snow_to_player(peer_id: int, snowflake_node_path: String) -> void:
 	get_snowman_by_peer_id(peer_id).add_snow()
+	delete_snowflake(snowflake_node_path)
 
+func delete_snowflake(snowflake_node_path: String) -> void:
+	var snowflake = get_node_or_null(snowflake_node_path)
+
+	if snowflake != null:
+		snowflake.queue_free()
+	
 func get_all_players() -> Array[Node]:
 	return get_tree().get_nodes_in_group("Players")
 

@@ -207,9 +207,10 @@ spawn_delay_min = 0.3
 spawn_delay_max = 0.7
 
 [node name="Map_02" parent="." instance=ExtResource("6_3dxm6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.01315403, -0.04452896, 0.019756317)
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("uid://dbf5a5xch38l7", "uid://bntcxvibf61dw")
+_spawnable_scenes = PackedStringArray("uid://dbf5a5xch38l7", "uid://bntcxvibf61dw", "uid://nyqci35mlo61")
 spawn_path = NodePath("..")
 
 [connection signal="pressed" from="MenuGroup/MainMenu/MarginContainer/VBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
