@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://dbf5a5xch38l7"]
 
-[ext_resource type="Script" uid="uid://segbp6rkd2dd" path="res://Player.gd" id="1_xhfnw"]
-[ext_resource type="PackedScene" uid="uid://div5xhfmjnms4" path="res://Bucket.glb" id="2_kpjcp"]
+[ext_resource type="Script" uid="uid://segbp6rkd2dd" path="res://scenes/Player.gd" id="1_xhfnw"]
+[ext_resource type="PackedScene" uid="uid://div5xhfmjnms4" path="res://scenes/Bucket.glb" id="2_kpjcp"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_0rwas"]
 
@@ -57,3 +57,11 @@ shape = SubResource("CapsuleShape3D_0rwas")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_kpjcp")
+
+[node name="CollectArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CollectArea"]
+transform = Transform3D(1.285, 0, 0, 0, 1.285, 0, 0, 0, 1.285, 0, 0.5, 0)
+shape = SubResource("CapsuleShape3D_0rwas")
+
+[connection signal="body_entered" from="CollectArea" to="." method="_on_area_3d_body_entered"]

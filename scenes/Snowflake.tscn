@@ -1,17 +1,18 @@
-[gd_scene load_steps=6 format=3 uid="uid://nyqci35mlo61"]
+[gd_scene load_steps=5 format=3 uid="uid://nyqci35mlo61"]
 
 [ext_resource type="ArrayMesh" uid="uid://vs6n82xqynxr" path="res://assets/snowflake.tres" id="1_2q3oo"]
-[ext_resource type="Script" uid="uid://mjpycw7hxkiq" path="res://scripts/snowflake.gd" id="2_2q3oo"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ob4fk"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_2q3oo"]
 radius = 0.0125
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_area"]
-radius = 0.02
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ob4fk"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
 
-[node name="SnowFlake" type="RigidBody3D"]
+[node name="SnowFlake" type="RigidBody3D" groups=["Snowflakes"]]
 mass = 0.001
 physics_material_override = SubResource("PhysicsMaterial_ob4fk")
 gravity_scale = 0.05
@@ -19,7 +20,6 @@ inertia = Vector3(90, 90, 90)
 sleeping = true
 can_sleep = false
 freeze_mode = 1
-script = ExtResource("2_2q3oo")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(80, 0, 0, 0, -3.4969112e-06, -80, 0, 80, -3.4969112e-06, 0, 0, 0)
@@ -29,9 +29,5 @@ mesh = ExtResource("1_2q3oo")
 transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, 0, 0, 0)
 shape = SubResource("SphereShape3D_2q3oo")
 
-[node name="Area3D" type="Area3D" parent="."]
-transform = Transform3D(45, 0, 0, 0, 45, 0, 0, 0, 45, 0, 0, 0)
-monitorable = false
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
-shape = SubResource("SphereShape3D_area")
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_ob4fk")

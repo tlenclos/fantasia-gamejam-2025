@@ -1,5 +1,5 @@
 [gd_scene load_steps=2 format=3 uid="uid://cgwt1s5yfeeew"]
 
-[ext_resource type="PackedScene" uid="uid://div5xhfmjnms4" path="res://Bucket.glb" id="1_4ioog"]
+[ext_resource type="PackedScene" uid="uid://div5xhfmjnms4" path="res://scenes/Bucket.glb" id="1_4ioog"]
 
 [node name="Bucket" instance=ExtResource("1_4ioog")]

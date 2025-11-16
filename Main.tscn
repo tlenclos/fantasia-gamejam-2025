@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://cup3o2rw2fqu2"]
+[gd_scene load_steps=19 format=3 uid="uid://cup3o2rw2fqu2"]
 
 [ext_resource type="Script" uid="uid://7laplj6m1gfl" path="res://Main.gd" id="1_r0du0"]
 [ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="2_fos0i"]
@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://nyqci35mlo61" path="res://scenes/Snowflake.tscn" id="4_fos0i"]
 [ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="4_lgr22"]
 [ext_resource type="Script" uid="uid://b8hhnqsugykly" path="res://addons/phantom_camera/scripts/resources/camera_3d_resource.gd" id="5_3dxm6"]
-[ext_resource type="PackedScene" uid="uid://cx8aq5v45lu8s" path="res://Map2.tscn" id="6_3dxm6"]
+[ext_resource type="PackedScene" uid="uid://cx8aq5v45lu8s" path="res://scenes/Map2.tscn" id="6_3dxm6"]
 
 [sub_resource type="Resource" id="Resource_trn2v"]
 script = ExtResource("4_lgr22")
@@ -48,8 +48,6 @@ albedo_color = Color(1, 1, 1, 0.5)
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_3dxm6"]
 radius = 1.0
-
-[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_3dxm6"]
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1_r0du0")
@@ -128,7 +126,7 @@ text = "Join"
 
 [node name="ServerAddressInput" type="LineEdit" parent="MenuGroup/MainMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "fantasia-game-2025.thibaultlenclos.fr"
+text = "localhost"
 placeholder_text = "Enter address to join"
 alignment = 1
 
@@ -189,8 +187,6 @@ gizmo_extents = 1.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.21122742, 0.1541771, 9.512919)
 gizmo_extents = 1.0
 
-[node name="Map_02" parent="." instance=ExtResource("6_3dxm6")]
-
 [node name="StartGameCircle" type="MeshInstance3D" parent="."]
 transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 0, -1.4265858, 5.0133)
 layers = 2
@@ -200,22 +196,21 @@ surface_material_override/0 = SubResource("StandardMaterial3D_lgr22")
 [node name="StartGameArea" type="Area3D" parent="StartGameCircle"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StartGameCircle/StartGameArea"]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 1.2626038, 0)
+transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1, 0, 1.2626038, 0)
 shape = SubResource("CylinderShape3D_3dxm6")
 debug_color = Color(0, 0, 0, 0.41960785)
-
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("uid://dbf5a5xch38l7")
-spawn_path = NodePath("..")
-
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
-replication_config = SubResource("SceneReplicationConfig_3dxm6")
 
 [node name="SnowSpawner" type="Node3D" parent="."]
 script = ExtResource("3_cm0pq")
 snowflake_scene = ExtResource("4_fos0i")
 spawn_delay_min = 0.3
 spawn_delay_max = 0.7
+
+[node name="Map_02" parent="." instance=ExtResource("6_3dxm6")]
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://dbf5a5xch38l7", "uid://bntcxvibf61dw")
+spawn_path = NodePath("..")
 
 [connection signal="pressed" from="MenuGroup/MainMenu/MarginContainer/VBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
 [connection signal="pressed" from="MenuGroup/MainMenu/MarginContainer/VBoxContainer/JoinButton" to="." method="_on_join_button_pressed"]

@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://dx7yk8ce7ua32"
-path="res://.godot/imported/Mountain Cabin.glb-40a2eb9bf5f7cc198aa7e345f455da9b.scn"
+uid="uid://div5xhfmjnms4"
+path="res://.godot/imported/Bucket.glb-3cfe4691c5fc1d292976451174dea8fe.scn"
 
 [deps]
 
-source_file="res://Mountain Cabin.glb"
-dest_files=["res://.godot/imported/Mountain Cabin.glb-40a2eb9bf5f7cc198aa7e345f455da9b.scn"]
+source_file="res://scenes/Bucket.glb"
+dest_files=["res://.godot/imported/Bucket.glb-3cfe4691c5fc1d292976451174dea8fe.scn"]
 
 [params]
 

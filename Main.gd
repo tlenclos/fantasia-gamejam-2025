@@ -1,12 +1,15 @@
-extends Node3D
+class_name Main extends Node3D
+
+const PlayerScene = preload("res://scenes/Player.tscn")
+const SnowmanScene = preload("res://scenes/Snowman.tscn")
 
 const PORT = 9999
-const Player = preload("res://Player.tscn")
 var enet_peer = ENetMultiplayerPeer.new()
 var used_spawn_positions: Array[Vector3] = []
 var host = "localhost"
 var isDedicatedServer = OS.has_feature("dedicated_server")
 var gameStarted = false
+var isServer = false
 
 @export var game_timer: int = 10
 @onready var main_menu: PanelContainer = $MenuGroup/MainMenu
@@ -17,6 +20,7 @@ var gameStarted = false
 @onready var phantom_camera_3d: PhantomCamera3D = $PhantomCamera3D
 @onready var start_game_circle: MeshInstance3D = $StartGameCircle
 @onready var start_game_area: Area3D = $StartGameCircle/StartGameArea
+@onready var snow_spawner: SnowSpaner = $SnowSpawner
 
 func _ready() -> void:
 	if isDedicatedServer:
@@ -24,10 +28,8 @@ func _ready() -> void:
 		create_server()
 
 func _physics_process(_delta: float) -> void:
-#	if not is_multiplayer_authority() or isDedicatedServer:
-#		return
 	var all_players = get_all_players()
-	if not gameStarted and all_players.size() > 0 and start_game_area.get_overlapping_bodies().filter(func(body): return body is Player).size() == all_players.size():
+	if not gameStarted and all_players.size() > 0 and start_game_area != null and start_game_area.get_overlapping_bodies().filter(func(body): return body is Player).size() == all_players.size():
 		start_game()
 		
 	# TODO Check win conditions here
@@ -41,6 +43,7 @@ func create_server() -> void:
 	multiplayer.multiplayer_peer = enet_peer
 	multiplayer.peer_connected.connect(add_player)
 	multiplayer.peer_disconnected.connect(remove_player)
+	isServer = true
 
 func _on_host_button_pressed() -> void:
 	error_label.text = ""
@@ -79,7 +82,7 @@ func _on_connected_fail(error) -> void:
 
 func add_player(peer_id):
 	# Server chose a spawn position and tells all clients
-	if multiplayer.is_server():
+	if isServer:
 		print('Player joined ', peer_id)
 		var spawn_pos = get_spawn_position()
 		used_spawn_positions.append(spawn_pos)
@@ -87,13 +90,19 @@ func add_player(peer_id):
 
 @rpc("any_peer", "call_local")
 func spawn_player(peer_id: int, spawn_pos: Vector3):
-	var player = Player.instantiate()
+	# Add player
+	var player = PlayerScene.instantiate()
 	player.name = str(peer_id)
 	player.position = spawn_pos
-	player.add_to_group("Players")
-	
 	add_child(player)
 	
+	# Add snowman
+	var snowman = SnowmanScene.instantiate()
+	snowman.position = spawn_pos
+	snowman.snowman_peer_id = peer_id
+	snowman.name = "Snowman" + str(peer_id)
+	add_child(snowman)
+	 
 	if not isDedicatedServer:
 		phantom_camera_3d.append_follow_targets(player)
 
@@ -120,12 +129,14 @@ func start_game() -> void:
 	game_ui_bottom_label.text = "Construisez votre bonhomme de neige"
 	start_game_circle.hide()
 	start_game_area.set_process(false)
-	print('Start game')
+	
+	if isServer:
+		snow_spawner.start_spawning()
 
 	for i in range(game_timer, 0, -1):
 		game_ui_bottom_label.text = "Temps restant : %ds" % i
 		await get_tree().create_timer(1).timeout
-		
+
 	end_game()
 
 func end_game() -> void:
@@ -135,11 +146,14 @@ func end_game() -> void:
 	start_game_area.set_process(true)
 	print("End game")
 
+func add_snow_to_player(peer_id: int) -> void:
+	get_snowman_by_peer_id(peer_id).add_snow()
+
 func get_all_players() -> Array[Node]:
 	return get_tree().get_nodes_in_group("Players")
 
 func get_player_by_peer_id(peer_id: int) -> Player:
-	var player_node = get_node_or_null(str(peer_id))
-	if player_node and player_node is Player:
-		return player_node
-	return null
+	return get_node_or_null(str(peer_id))
+
+func get_snowman_by_peer_id(peer_id: int) -> Snowman:
+	return get_node_or_null("Snowman" + str(peer_id))

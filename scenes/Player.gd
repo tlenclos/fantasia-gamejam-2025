@@ -4,11 +4,14 @@ const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
 var isGrowing = false
 var initialScale = Vector3(1, 1, 1)
+# TODO Prevent players having the same color
 const playersColor = [
 	Color(0.672, 0.0, 0.0, 1.0),
 	Color(0.598, 0.932, 0.953, 1.0),
 	Color(0.186, 0.169, 0.867, 1.0),
 	Color(0.86, 0.434, 0.368, 1.0),
+	Color(0.32, 0.847, 0.185, 1.0),
+	Color(0.814, 0.758, 0.054, 1.0),
 ]
 
 @export var growingFactor = 0.5
@@ -89,3 +92,10 @@ func _apply_color() -> void:
 		body.set_surface_override_material(0, material)
 	
 	material.albedo_color = color
+
+func _on_area_3d_body_entered(collision_body: Node3D) -> void:
+	if not is_multiplayer_authority(): return
+	
+	if collision_body.is_in_group("Snowflakes"):
+		collision_body.queue_free()
+		(get_tree().root.get_node("Main") as Main).add_snow_to_player(int(self.name))
