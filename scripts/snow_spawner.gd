@@ -40,7 +40,7 @@ func _spawn(pos: Vector3, id: int):
 	flake.position = to_global(pos)
 	# force name here to be constant across player, this ensure that is has the same path within godot so we can sync deletion
 	flake.name = "snowflake_" + str(id)
-	
+
 	if multiplayer.is_server():
 		timer.wait_time = randf_range(spawn_delay_min, spawn_delay_max)
 		timer.start()
