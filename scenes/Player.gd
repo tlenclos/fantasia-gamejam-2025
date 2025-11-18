@@ -21,9 +21,9 @@ const playersColor = [
 
 func _ready() -> void:
 	initialScale = scale
-	
+
 	if not is_multiplayer_authority(): return
-	
+
 	color = playersColor[randi() % playersColor.size()]
 
 func _enter_tree() -> void:
@@ -33,10 +33,10 @@ func _input(event: InputEvent) -> void:
 	if not is_multiplayer_authority(): return
 	if event is InputEventMouseButton and event.is_pressed():
 		grow()
-		
+
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority(): return
-	
+
 	# Add the gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta
@@ -61,17 +61,17 @@ func _physics_process(delta: float) -> void:
 	body.rotation.y = target_rotation
 
 	move_and_slide()
-	
+
 	# Ungrow
 	if isGrowing:
 		scale -= Vector3(reducingFactor, reducingFactor, reducingFactor)
 		if scale.x < initialScale.x:
 			isGrowing = false
-	
+
 func grow() -> void:
 	isGrowing = true
 	if scale.x > 2: return
-	
+
 	scale += Vector3(growingFactor, growingFactor, growingFactor)
 
 func set_color(new_color: Color) -> void:
@@ -90,7 +90,7 @@ func _apply_color() -> void:
 		else:
 			material = StandardMaterial3D.new()
 		body.set_surface_override_material(0, material)
-	
+
 	material.albedo_color = color
 
 func _on_area_3d_body_entered(node: Node3D) -> void:
