@@ -10,95 +10,43 @@ on:
 
 jobs:
   build:
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        include:
-          - platform: linux
-            runner: ubuntu-latest
+        platform:
+          - name: Linux
             preset: Linux
-            export_path: exports/FantasiaGamejam2025-Linux.x86_64
-            artifact_name: FantasiaGamejam2025-Linux.x86_64
-            godot_file: Godot_v4.5-stable_linux.x86_64
-            godot_ext: .zip
-          - platform: macos
-            runner: macos-latest
+            artifact: FantasiaGamejam2025-Linux.x86_64
+          - name: macOS
             preset: macOS
-            export_path: exports/FantasiaGamejam2025-macOS.zip
-            artifact_name: FantasiaGamejam2025-macOS.zip
-            godot_file: Godot_v4.5-stable_macos.universal
-            godot_ext: .zip
-          - platform: windows
-            runner: windows-latest
+            artifact: FantasiaGamejam2025-macOS.zip
+          - name: Windows
             preset: Windows
-            export_path: exports/FantasiaGamejam2025-Windows.exe
-            artifact_name: FantasiaGamejam2025-Windows.exe
-            godot_file: Godot_v4.5-stable_win64.exe
-            godot_ext: .exe
-
-    runs-on: ${{ matrix.runner }}
+            artifact: FantasiaGamejam2025-Windows.exe
+    container:
+      image: barichello/godot-ci:4.5.1
     
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Godot (Linux)
-        if: matrix.platform == 'linux'
-        shell: bash
+      - name: Set up export templates
         run: |
-          GODOT_VERSION="4.5"
-          GODOT_FILE="${{ matrix.godot_file }}"
-          GODOT_EXT="${{ matrix.godot_ext }}"
-          wget -q https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/${GODOT_FILE}${GODOT_EXT}
-          unzip -q ${GODOT_FILE}${GODOT_EXT}
-          chmod +x ${GODOT_FILE}
-          sudo mv ${GODOT_FILE} /usr/local/bin/godot
-          rm ${GODOT_FILE}${GODOT_EXT}
+          GODOT_VERSION="4.5.1"
+          mkdir -p ~/.local/share/godot/export_templates
+          mv /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
 
-      - name: Setup Godot (macOS)
-        if: matrix.platform == 'macos'
-        shell: bash
-        run: |
-          GODOT_VERSION="4.5"
-          GODOT_FILE="${{ matrix.godot_file }}"
-          GODOT_EXT="${{ matrix.godot_ext }}"
-          wget -q https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/${GODOT_FILE}${GODOT_EXT}
-          unzip -q ${GODOT_FILE}${GODOT_EXT}
-          chmod +x ${GODOT_FILE}/Godot.app/Contents/MacOS/Godot
-          sudo mv ${GODOT_FILE}/Godot.app/Contents/MacOS/Godot /usr/local/bin/godot
-          rm -rf ${GODOT_FILE}${GODOT_EXT} ${GODOT_FILE}
+      - name: Create exports directory
+        run: mkdir -p exports
 
-      - name: Setup Godot (Windows)
-        if: matrix.platform == 'windows'
-        shell: pwsh
-        run: |
-          $GODOT_VERSION = "4.5"
-          $GODOT_FILE = "${{ matrix.godot_file }}"
-          $GODOT_URL = "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/${GODOT_FILE}"
-          Invoke-WebRequest -Uri $GODOT_URL -OutFile "godot.exe"
-          echo "$PWD" | Out-File -FilePath $env:GITHUB_PATH -Append -Encoding utf8
+      - name: Export for ${{ matrix.platform.name }}
+        run: godot --headless --path . --export-release "${{ matrix.platform.preset }}" "exports/${{ matrix.platform.artifact }}"
 
-      - name: Export game (Linux)
-        if: matrix.platform == 'linux'
-        shell: bash
-        run: make build-linux
-
-      - name: Export game (macOS)
-        if: matrix.platform == 'macos'
-        shell: bash
-        run: make build-macos
-
-      - name: Export game (Windows)
-        if: matrix.platform == 'windows'
-        shell: pwsh
-        env:
-          GODOT_PATH: .\godot.exe
-        run: make build-windows
-
-      - name: Upload artifact
+      - name: Upload ${{ matrix.platform.name }} artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.artifact_name }}
-          path: ${{ matrix.export_path }}
+          name: ${{ matrix.platform.artifact }}
+          path: exports/${{ matrix.platform.artifact }}
           retention-days: 30
 
   create-release:
