@@ -1,0 +1,137 @@
+name: Release Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g., v1.0.0)'
+        required: true
+        type: string
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - platform: linux
+            runner: ubuntu-latest
+            preset: Linux
+            export_path: exports/FantasiaGamejam2025-Linux.x86_64
+            artifact_name: FantasiaGamejam2025-Linux.x86_64
+            godot_file: Godot_v4.5-stable_linux.x86_64
+            godot_ext: .zip
+          - platform: macos
+            runner: macos-latest
+            preset: macOS
+            export_path: exports/FantasiaGamejam2025-macOS.zip
+            artifact_name: FantasiaGamejam2025-macOS.zip
+            godot_file: Godot_v4.5-stable_macos.universal
+            godot_ext: .zip
+          - platform: windows
+            runner: windows-latest
+            preset: Windows
+            export_path: exports/FantasiaGamejam2025-Windows.exe
+            artifact_name: FantasiaGamejam2025-Windows.exe
+            godot_file: Godot_v4.5-stable_win64.exe
+            godot_ext: .exe
+
+    runs-on: ${{ matrix.runner }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Godot (Linux)
+        if: matrix.platform == 'linux'
+        shell: bash
+        run: |
+          GODOT_VERSION="4.5"
+          GODOT_FILE="${{ matrix.godot_file }}"
+          GODOT_EXT="${{ matrix.godot_ext }}"
+          wget -q https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/${GODOT_FILE}${GODOT_EXT}
+          unzip -q ${GODOT_FILE}${GODOT_EXT}
+          chmod +x ${GODOT_FILE}
+          sudo mv ${GODOT_FILE} /usr/local/bin/godot
+          rm ${GODOT_FILE}${GODOT_EXT}
+
+      - name: Setup Godot (macOS)
+        if: matrix.platform == 'macos'
+        shell: bash
+        run: |
+          GODOT_VERSION="4.5"
+          GODOT_FILE="${{ matrix.godot_file }}"
+          GODOT_EXT="${{ matrix.godot_ext }}"
+          wget -q https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/${GODOT_FILE}${GODOT_EXT}
+          unzip -q ${GODOT_FILE}${GODOT_EXT}
+          chmod +x ${GODOT_FILE}/Godot.app/Contents/MacOS/Godot
+          sudo mv ${GODOT_FILE}/Godot.app/Contents/MacOS/Godot /usr/local/bin/godot
+          rm -rf ${GODOT_FILE}${GODOT_EXT} ${GODOT_FILE}
+
+      - name: Setup Godot (Windows)
+        if: matrix.platform == 'windows'
+        shell: pwsh
+        run: |
+          $GODOT_VERSION = "4.5"
+          $GODOT_FILE = "${{ matrix.godot_file }}"
+          $GODOT_URL = "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/${GODOT_FILE}"
+          Invoke-WebRequest -Uri $GODOT_URL -OutFile "godot.exe"
+          echo "$PWD" | Out-File -FilePath $env:GITHUB_PATH -Append -Encoding utf8
+
+      - name: Export game (Linux)
+        if: matrix.platform == 'linux'
+        shell: bash
+        run: make build-linux
+
+      - name: Export game (macOS)
+        if: matrix.platform == 'macos'
+        shell: bash
+        run: make build-macos
+
+      - name: Export game (Windows)
+        if: matrix.platform == 'windows'
+        shell: pwsh
+        env:
+          GODOT_PATH: .\godot.exe
+        run: make build-windows
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: ${{ matrix.export_path }}
+          retention-days: 30
+
+  create-release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release-artifacts
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.event.inputs.version }}
+          name: Release ${{ github.event.inputs.version }}
+          body: |
+            Release ${{ github.event.inputs.version }}
+            
+            ## Downloads
+            - **Linux**: `FantasiaGamejam2025-Linux.x86_64`
+            - **macOS**: `FantasiaGamejam2025-macOS.zip`
+            - **Windows**: `FantasiaGamejam2025-Windows.exe`
+          files: |
+            release-artifacts/FantasiaGamejam2025-Linux.x86_64/FantasiaGamejam2025-Linux.x86_64
+            release-artifacts/FantasiaGamejam2025-macOS.zip/FantasiaGamejam2025-macOS.zip
+            release-artifacts/FantasiaGamejam2025-Windows.exe/FantasiaGamejam2025-Windows.exe
+          draft: false
+          prerelease: false
+
