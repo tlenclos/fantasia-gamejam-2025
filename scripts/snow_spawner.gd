@@ -31,6 +31,20 @@ func _on_spawn():
 	_spawn.rpc(pos, id)
 	id += 1
 
+func stop_spawning():
+	if multiplayer.is_server():
+		timer.stop()
+	
+	# Clear snowflakes for all players
+	_clear_snowflakes.rpc()
+
+@rpc("any_peer", "call_local")
+func _clear_snowflakes():
+	# Clear all snowflakes
+	for child in get_children():
+		if child.is_in_group("Snowflakes"):
+			child.queue_free()
+
 @rpc("any_peer", "call_local")
 func _spawn(pos: Vector3, id: int):
 	if not snowflake_scene:

@@ -10,7 +10,7 @@ var isDedicatedServer = OS.has_feature("dedicated_server")
 var gameStarted = false
 var isServer = false
 
-@export var game_timer: int = 10
+@export var game_timer: int = 3
 @onready var main_menu: PanelContainer = $MenuGroup/MainMenu
 @onready var game_ui: CanvasLayer = $GameUIGroup
 @onready var game_ui_bottom_label: Label = $GameUIGroup/GameUI/MarginContainer/VBoxContainer/Label
@@ -106,7 +106,7 @@ func spawn_player(peer_id: int, spawn_path: String):
 	# Add snowman
 	var snowman = SnowmanScene.instantiate()
 	snowman.position = spawn.position
-	snowman.snowman_peer_id = peer_id
+	snowman.player = player
 	snowman.name = "Snowman" + str(peer_id)
 	add_child(snowman)
 
@@ -147,21 +147,28 @@ func start_game() -> void:
 	start_game_circle.hide()
 	start_game_area.set_process(false)
 
+	# Reset all snowmans
+	for player in get_all_players():
+		get_snowman_by_peer_id(int(player.name)).reset()
+
+	for i in range(game_timer, 0, -1):
+		game_ui_bottom_label.text = "Démarrage dans : %ds" % i
+		await get_tree().create_timer(1).timeout
+
+	game_ui.hide();
+
 	if isServer:
 		snow_spawner.start_spawning()
 
-	for i in range(game_timer, 0, -1):
-		game_ui_bottom_label.text = "Temps restant : %ds" % i
-		await get_tree().create_timer(1).timeout
-
-	end_game()
-
 func end_game() -> void:
 	gameStarted = false
+	game_ui.show()
 	game_ui_bottom_label.text = "La partie est terminée !"
 	start_game_circle.show()
 	start_game_area.set_process(true)
-	print("End game")
+	
+	if isServer:
+		snow_spawner.stop_spawning()
 
 @rpc("any_peer", "call_local")
 func add_snow_to_player(peer_id: int, snowflake_node_path: String) -> void:
@@ -182,3 +189,7 @@ func get_player_by_peer_id(peer_id: int) -> Player:
 
 func get_snowman_by_peer_id(peer_id: int) -> Snowman:
 	return get_node_or_null("Snowman" + str(peer_id))
+
+@rpc("any_peer", "call_local")
+func win_game(player: Player) -> void:
+	end_game()
