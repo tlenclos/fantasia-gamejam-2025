@@ -31,8 +31,6 @@ func _physics_process(_delta: float) -> void:
 	if not gameStarted and all_players.size() > 0 and start_game_area != null and start_game_area.get_overlapping_bodies().filter(func(body): return body is Player).size() == all_players.size():
 		start_game()
 
-	# TODO Check win conditions here
-
 func create_server() -> void:
 	var error = enet_peer.create_server(PORT)
 	if error != OK:

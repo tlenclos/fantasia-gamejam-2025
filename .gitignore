@@ -2,4 +2,8 @@
 .godot/
 /android/
 
+# Exports
 exports
+
+# Ignore import files in blender_sources (keep .blend files but not imports)
+blender_sources/*.blend.import

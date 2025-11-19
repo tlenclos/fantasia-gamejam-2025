@@ -30,7 +30,6 @@ WORKDIR /godotapp
 COPY . project/
 
 WORKDIR /godotapp/project
-RUN find . -name "*.blend" -delete && find . -name "*.blend.import" -delete || true
 
 RUN godot --headless --path . --export-pack "Server Linux" /godotapp/${GODOT_GAME_NAME}.pck --verbose
 
