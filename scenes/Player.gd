@@ -4,15 +4,6 @@ const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
 var isGrowing = false
 var initialScale = Vector3(1, 1, 1)
-# TODO Prevent players having the same color
-const playersColor = [
-	Color(0.672, 0.0, 0.0, 1.0),
-	Color(0.598, 0.932, 0.953, 1.0),
-	Color(0.186, 0.169, 0.867, 1.0),
-	Color(0.86, 0.434, 0.368, 1.0),
-	Color(0.32, 0.847, 0.185, 1.0),
-	Color(0.814, 0.758, 0.054, 1.0),
-]
 
 @export var growingFactor = 0.5
 @export var reducingFactor = 0.01
@@ -21,10 +12,6 @@ const playersColor = [
 
 func _ready() -> void:
 	initialScale = scale
-
-	if not is_multiplayer_authority(): return
-
-	color = playersColor[randi() % playersColor.size()]
 
 func _enter_tree() -> void:
 	set_multiplayer_authority(str(name).to_int())

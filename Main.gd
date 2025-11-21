@@ -21,6 +21,15 @@ var isServer = false
 @onready var start_game_area: Area3D = $StartGameCircle/StartGameArea
 @onready var snow_spawner: SnowSpaner = $SnowSpawner
 
+const playersColor = [
+	Color(0.672, 0.0, 0.0, 1.0),
+	Color(0.598, 0.932, 0.953, 1.0),
+	Color(0.186, 0.169, 0.867, 1.0),
+	Color(0.86, 0.434, 0.368, 1.0),
+	Color(0.32, 0.847, 0.185, 1.0),
+	Color(0.814, 0.758, 0.054, 1.0),
+]
+
 func _ready() -> void:
 	if isDedicatedServer:
 		print("Starting dedicated server on port ", PORT)
@@ -87,11 +96,13 @@ func add_player(peer_id):
 			# @TODO Kick player : no more space
 			return
 
+		var color = get_player_color()
+
 		spawn.set_meta("player", peer_id)
-		spawn_player.rpc(peer_id, spawn.get_path())
+		spawn_player.rpc(peer_id, spawn.get_path(), color)
 
 @rpc("any_peer", "call_local")
-func spawn_player(peer_id: int, spawn_path: String):
+func spawn_player(peer_id: int, spawn_path: String, color: Color):
 	var spawn = get_node(spawn_path)
 
 	# Add player
@@ -108,6 +119,8 @@ func spawn_player(peer_id: int, spawn_path: String):
 	snowman.name = "Snowman" + str(peer_id)
 	add_child(snowman)
 
+	player.set_color(color)
+
 	if not isDedicatedServer:
 		phantom_camera_3d.append_follow_targets(player)
 
@@ -122,6 +135,23 @@ func remove_player(peer_id):
 			spawn.set_meta("player", null)
 
 		remove_child(player)
+
+func get_player_color() -> Color:
+	var players = get_all_players();
+	var available_colors = [];
+
+	for color in playersColor:
+		var has_color = false
+
+		for player in players:
+			if player.color == color:
+				has_color = true
+				break;
+
+		if not has_color:
+			available_colors.append(color)
+
+	return available_colors.pick_random()
 
 func get_spawn_position() -> Node:
 	var spawns = get_tree().get_nodes_in_group("SpawnPositions")
@@ -164,7 +194,7 @@ func end_game() -> void:
 	game_ui_bottom_label.text = "La partie est terminée !"
 	start_game_circle.show()
 	start_game_area.set_process(true)
-	
+
 	if isServer:
 		snow_spawner.stop_spawning()
 
