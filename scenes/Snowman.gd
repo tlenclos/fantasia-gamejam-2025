@@ -43,8 +43,8 @@ func add_snow(amount: int = 1) -> void:
 	step_6.visible = current_step >= 6
 	step_7.visible = current_step >= 7
 
-	if (current_step == 7):
-		(get_tree().root.get_node("Main") as Main).win_game.rpc(player)
+	if (current_step == 7) and player:
+		(get_tree().root.get_node("Main") as Main).win_game.rpc(player.name)
 
 func reset() -> void:
 	current_step = 0

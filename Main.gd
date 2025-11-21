@@ -8,6 +8,7 @@ var enet_peer = ENetMultiplayerPeer.new()
 var isDedicatedServer = OS.has_feature("dedicated_server")
 var gameStarted = false
 var isServer = false
+var tween: Tween
 
 @export var game_timer: int = 3
 @onready var main_menu: PanelContainer = $MenuGroup/MainMenu
@@ -18,6 +19,7 @@ var isServer = false
 @onready var start_game_circle: MeshInstance3D = $StartGameCircle
 @onready var start_game_area: Area3D = $StartGameCircle/StartGameArea
 @onready var snow_spawner: SnowSpaner = $SnowSpawner
+@onready var notification: Notification = $GameUIGroup/Notification
 
 const playersColor = [
 	Color(0.672, 0.0, 0.0, 1.0),
@@ -147,7 +149,7 @@ func get_player_color() -> Color:
 		for player in players:
 			if player.color == color:
 				has_color = true
-				break;
+				break ;
 
 		if not has_color:
 			available_colors.append(color)
@@ -220,5 +222,10 @@ func get_snowman_by_peer_id(peer_id: int) -> Snowman:
 	return get_node_or_null("Snowman" + str(peer_id))
 
 @rpc("any_peer", "call_local")
-func win_game(player: Player) -> void:
+func win_game(winner_peer_id: String) -> void:
 	end_game()
+	
+	if winner_peer_id == str(multiplayer.get_unique_id()):
+		notification.toast("Tu as gagné, bravo !!")
+	else:
+		notification.toast("Déso t'as perdu")

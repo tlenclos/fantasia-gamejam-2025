@@ -1,13 +1,15 @@
-[gd_scene load_steps=20 format=3 uid="uid://cup3o2rw2fqu2"]
+[gd_scene load_steps=22 format=3 uid="uid://yjutnsht3p30"]
 
 [ext_resource type="Script" uid="uid://7laplj6m1gfl" path="res://Main.gd" id="1_r0du0"]
 [ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="2_fos0i"]
+[ext_resource type="PackedScene" uid="uid://cax3incqgmgkt" path="res://components/Notification.tscn" id="2_wkp8b"]
 [ext_resource type="Script" uid="uid://csjccrhj5wnx7" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="3_3dxm6"]
 [ext_resource type="Script" uid="uid://c4fkky2tj1ji5" path="res://scripts/snow_spawner.gd" id="3_cm0pq"]
 [ext_resource type="PackedScene" uid="uid://nyqci35mlo61" path="res://scenes/Snowflake.tscn" id="4_fos0i"]
 [ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="4_lgr22"]
 [ext_resource type="Script" uid="uid://b8hhnqsugykly" path="res://addons/phantom_camera/scripts/resources/camera_3d_resource.gd" id="5_3dxm6"]
 [ext_resource type="PackedScene" uid="uid://cx8aq5v45lu8s" path="res://scenes/Map2.tscn" id="6_3dxm6"]
+[ext_resource type="PackedScene" uid="uid://bwdwkuwuw1dad" path="res://components/Button.tscn" id="6_03owx"]
 
 [sub_resource type="Resource" id="Resource_trn2v"]
 script = ExtResource("4_lgr22")
@@ -149,15 +151,15 @@ horizontal_alignment = 1
 [node name="HBoxContainer" type="HBoxContainer" parent="MenuGroup/MainMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="HostButton" type="Button" parent="MenuGroup/MainMenu/MarginContainer/VBoxContainer"]
+[node name="HostButton" parent="MenuGroup/MainMenu/MarginContainer/VBoxContainer" instance=ExtResource("6_03owx")]
 layout_mode = 2
 text = "Host"
 
-[node name="JoinLocalhostButton" type="Button" parent="MenuGroup/MainMenu/MarginContainer/VBoxContainer"]
+[node name="JoinLocalhostButton" parent="MenuGroup/MainMenu/MarginContainer/VBoxContainer" instance=ExtResource("6_03owx")]
 layout_mode = 2
 text = "Join localhost"
 
-[node name="JoinOfficialServerButton" type="Button" parent="MenuGroup/MainMenu/MarginContainer/VBoxContainer"]
+[node name="JoinOfficialServerButton" parent="MenuGroup/MainMenu/MarginContainer/VBoxContainer" instance=ExtResource("6_03owx")]
 layout_mode = 2
 text = "Join official server"
 
@@ -167,6 +169,8 @@ theme_override_colors/font_color = Color(0.91356707, 0.18784529, 0.24959585, 1)
 horizontal_alignment = 1
 
 [node name="GameUIGroup" type="CanvasLayer" parent="."]
+
+[node name="Notification" parent="GameUIGroup" instance=ExtResource("2_wkp8b")]
 
 [node name="GameUI" type="PanelContainer" parent="GameUIGroup"]
 anchors_preset = 12
