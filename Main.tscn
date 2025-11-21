@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://cup3o2rw2fqu2"]
+[gd_scene load_steps=20 format=3 uid="uid://cup3o2rw2fqu2"]
 
 [ext_resource type="Script" uid="uid://7laplj6m1gfl" path="res://Main.gd" id="1_r0du0"]
 [ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="2_fos0i"]
@@ -49,6 +49,9 @@ albedo_color = Color(1, 1, 1, 0.5)
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_3dxm6"]
 radius = 1.0
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_trn2v"]
+size = Vector3(1, 8.036743, 31.7583)
+
 [node name="Main" type="Node3D"]
 script = ExtResource("1_r0du0")
 
@@ -56,27 +59,27 @@ script = ExtResource("1_r0du0")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.19092584, 0.1541771, -0.6159096)
 
 [node name="Spawn1" type="Marker3D" parent="Spawn" groups=["SpawnPositions"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.942, -0.67079836, 0.754)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.112539, -0.9181545, -0.9550073)
 gizmo_extents = 1.0
 
 [node name="Spawn2" type="Marker3D" parent="Spawn" groups=["SpawnPositions"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.402, -0.687557, 8.878)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8762572, -0.9281968, 8.878)
 gizmo_extents = 1.0
 
 [node name="Spawn3" type="Marker3D" parent="Spawn" groups=["SpawnPositions"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.003, -0.9018277, 10.482)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.003, -1.2944869, 10.482)
 gizmo_extents = 1.0
 
 [node name="Spawn4" type="Marker3D" parent="Spawn" groups=["SpawnPositions"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.425, -0.524735, 0.121)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.261522, -1.1919608, 0.12099999)
 gizmo_extents = 1.0
 
 [node name="Spawn5" type="Marker3D" parent="Spawn" groups=["SpawnPositions"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.191, -0.8747592, -0.616)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.7821865, -0.711231, -9.55098)
 gizmo_extents = 1.0
 
 [node name="Spawn6" type="Marker3D" parent="Spawn" groups=["SpawnPositions"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.211, -1.2798358, 9.513)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.211, -0.88327694, 14.812268)
 gizmo_extents = 1.0
 
 [node name="Camera3D" type="Camera3D" parent="."]
@@ -110,7 +113,7 @@ metadata/_custom_type_script = "uid://csjccrhj5wnx7"
 environment = SubResource("Environment_uu6xs")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.5165333, 0.8562671, 0, -0.8562671, 0.5165333, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 0.5165333, 0.8562671, 0, -0.8562671, 0.5165333, 6.036375, 0, 0)
 light_energy = 0.8
 shadow_enabled = true
 
@@ -191,7 +194,7 @@ text = "Pour démarrer la partie, restez dans le cercle"
 horizontal_alignment = 1
 
 [node name="StartGameCircle" type="MeshInstance3D" parent="."]
-transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 0, -1.4265858, 5.0133)
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 5.1742725, -1.4265858, 0.8577728)
 layers = 2
 mesh = SubResource("TorusMesh_3dxm6")
 surface_material_override/0 = SubResource("StandardMaterial3D_lgr22")
@@ -204,17 +207,53 @@ shape = SubResource("CylinderShape3D_3dxm6")
 debug_color = Color(0, 0, 0, 0.41960785)
 
 [node name="SnowSpawner" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.860132, 0, 1.408144)
 script = ExtResource("3_cm0pq")
 snowflake_scene = ExtResource("4_fos0i")
 spawn_delay_min = 0.3
 spawn_delay_max = 0.7
 
-[node name="Map_02" parent="." instance=ExtResource("6_3dxm6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.01315403, -0.04452896, 0.019756317)
+[node name="Map" parent="." instance=ExtResource("6_3dxm6")]
+transform = Transform3D(0.38651776, 0, 0.922282, 0, 1, 0, -0.922282, 0, 0.38651776, -0.0030755997, -0.02879715, -0.010669708)
+
+[node name="Map_02" parent="Map" instance=ExtResource("6_3dxm6")]
+transform = Transform3D(-0.8259607, 0, -0.5637281, 0, 1, 0, 0.5637281, 0, -0.8259607, 29.200884, -0.04452896, 27.215668)
+
+[node name="Map_02" parent="Map/Map_02" instance=ExtResource("6_3dxm6")]
+transform = Transform3D(0.5001366, 0, -0.8659473, 0, 1, 0, 0.8659473, 0, 0.5001366, 40.933132, -0.04452896, 14.055681)
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("uid://dbf5a5xch38l7", "uid://bntcxvibf61dw", "uid://nyqci35mlo61")
 spawn_path = NodePath("..")
+
+[node name="Zone" type="Node3D" parent="."]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Zone"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Zone/StaticBody3D"]
+transform = Transform3D(0.975951, 0, -0.21798995, 0, 1, 0, 0.21798995, 0, 0.975951, -7.445696, 3.4485474, -1.1026897)
+shape = SubResource("BoxShape3D_trn2v")
+debug_color = Color(0.9494148, 2.2140146e-06, 0.57121134, 1)
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Zone/StaticBody3D"]
+transform = Transform3D(0.5432916, 0, 0.83954406, 0, 1, 0, -0.83954406, 0, 0.5432916, -1.682559, 3.4485474, 20.512936)
+shape = SubResource("BoxShape3D_trn2v")
+debug_color = Color(0.9494148, 2.2140146e-06, 0.57121134, 1)
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="Zone/StaticBody3D"]
+transform = Transform3D(-0.7934915, 0, 0.6085813, 0, 1, 0, -0.6085813, 0, -0.7934915, 12.393722, 3.4485474, 10.571801)
+shape = SubResource("BoxShape3D_trn2v")
+debug_color = Color(0.9494148, 2.2140146e-06, 0.57121134, 1)
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="Zone/StaticBody3D"]
+transform = Transform3D(-0.89000607, 0, -0.455949, 0, 1, 0, 0.455949, 0, -0.89000607, 15.959598, 3.4485474, -10.439681)
+shape = SubResource("BoxShape3D_trn2v")
+debug_color = Color(0.9494148, 2.2140146e-06, 0.57121134, 1)
+
+[node name="CollisionShape3D5" type="CollisionShape3D" parent="Zone/StaticBody3D"]
+transform = Transform3D(0.21043782, 0, -0.9776074, 0, 1, 0, 0.9776074, 0, 0.21043782, 4.8694506, 3.4485474, -18.138496)
+shape = SubResource("BoxShape3D_trn2v")
+debug_color = Color(0.9494148, 2.2140146e-06, 0.57121134, 1)
 
 [connection signal="pressed" from="MenuGroup/MainMenu/MarginContainer/VBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
 [connection signal="pressed" from="MenuGroup/MainMenu/MarginContainer/VBoxContainer/JoinLocalhostButton" to="." method="_on_join_localhost"]
