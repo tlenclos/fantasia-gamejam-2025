@@ -18,7 +18,12 @@ func _ready() -> void:
 	pass
 
 func _process(_delta: float) -> void:
-	pass
+	if not is_multiplayer_authority():
+		pass
+	
+	var newPosition = player.position
+	newPosition.y = self.position.y
+	look_at(newPosition)
 
 func add_snow(amount: int = 1) -> void:
 	snow_count += amount
