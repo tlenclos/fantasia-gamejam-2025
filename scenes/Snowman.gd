@@ -13,6 +13,7 @@ class_name Snowman extends StaticBody3D
 
 var player: Player
 var snow_count: int = 0
+var total_step_needed: int = 7
 
 func _ready() -> void:
 	pass
@@ -30,7 +31,7 @@ func _process(_delta: float) -> void:
 
 func add_snow(amount: int = 1) -> void:
 	snow_count += amount
-	if snow_count >= snow_amount_for_next_step and current_step < 7:
+	if snow_count >= snow_amount_for_next_step and current_step < total_step_needed:
 		current_step += 1
 		snow_count = 0
 
