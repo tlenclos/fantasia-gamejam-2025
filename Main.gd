@@ -5,7 +5,6 @@ const SnowmanScene = preload("res://scenes/Snowman.tscn")
 
 const PORT = 9999
 var enet_peer = ENetMultiplayerPeer.new()
-var host = "localhost"
 var isDedicatedServer = OS.has_feature("dedicated_server")
 var gameStarted = false
 var isServer = false
@@ -14,7 +13,6 @@ var isServer = false
 @onready var main_menu: PanelContainer = $MenuGroup/MainMenu
 @onready var game_ui: CanvasLayer = $GameUIGroup
 @onready var game_ui_bottom_label: Label = $GameUIGroup/GameUI/MarginContainer/VBoxContainer/Label
-@onready var server_address_input: LineEdit = $MenuGroup/MainMenu/MarginContainer/VBoxContainer/ServerAddressInput
 @onready var error_label: Label = $MenuGroup/MainMenu/MarginContainer/VBoxContainer/ErrorLabel
 @onready var phantom_camera_3d: PhantomCamera3D = $PhantomCamera3D
 @onready var start_game_circle: MeshInstance3D = $StartGameCircle
@@ -58,11 +56,14 @@ func _on_host_button_pressed() -> void:
 	create_server()
 	add_player(multiplayer.get_unique_id())
 
-func _on_join_button_pressed() -> void:
+func _on_join_official_server_button_pressed() -> void:
+	_join_server("fantasia-gamejam-2025.thibaultlenclos.fr")
+	
+func _on_join_localhost() -> void:
+	_join_server("localhost")
+	
+func _join_server(host: String) -> void:
 	error_label.text = ""
-
-	if server_address_input.text != "":
-		host = server_address_input.text
 
 	print("Connecting to ", host)
 	var error = enet_peer.create_client(host, PORT)
@@ -81,7 +82,7 @@ func _on_connected_ok() -> void:
 
 func _on_connected_fail(error) -> void:
 	print("Connection to server failed: ", error)
-	error_label.text = "Failed to connect to server: " + str(host)
+	error_label.text = "Failed to connect to server"
 	main_menu.show()
 	game_ui.hide()
 	multiplayer.multiplayer_peer = null

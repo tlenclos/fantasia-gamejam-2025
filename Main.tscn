@@ -143,19 +143,20 @@ layout_mode = 2
 text = "Menu"
 horizontal_alignment = 1
 
+[node name="HBoxContainer" type="HBoxContainer" parent="MenuGroup/MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
 [node name="HostButton" type="Button" parent="MenuGroup/MainMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Host"
 
-[node name="JoinButton" type="Button" parent="MenuGroup/MainMenu/MarginContainer/VBoxContainer"]
+[node name="JoinLocalhostButton" type="Button" parent="MenuGroup/MainMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "Join"
+text = "Join localhost"
 
-[node name="ServerAddressInput" type="LineEdit" parent="MenuGroup/MainMenu/MarginContainer/VBoxContainer"]
+[node name="JoinOfficialServerButton" type="Button" parent="MenuGroup/MainMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "fantasia-gamejam-2025.thibaultlenclos.fr"
-placeholder_text = "Enter address to join"
-alignment = 1
+text = "Join official server"
 
 [node name="ErrorLabel" type="Label" parent="MenuGroup/MainMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -216,4 +217,5 @@ _spawnable_scenes = PackedStringArray("uid://dbf5a5xch38l7", "uid://bntcxvibf61d
 spawn_path = NodePath("..")
 
 [connection signal="pressed" from="MenuGroup/MainMenu/MarginContainer/VBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
-[connection signal="pressed" from="MenuGroup/MainMenu/MarginContainer/VBoxContainer/JoinButton" to="." method="_on_join_button_pressed"]
+[connection signal="pressed" from="MenuGroup/MainMenu/MarginContainer/VBoxContainer/JoinLocalhostButton" to="." method="_on_join_localhost"]
+[connection signal="pressed" from="MenuGroup/MainMenu/MarginContainer/VBoxContainer/JoinOfficialServerButton" to="." method="_on_join_official_server_button_pressed"]
