@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://cup3o2rw2fqu2"]
+[gd_scene load_steps=32 format=3 uid="uid://cup3o2rw2fqu2"]
 
 [ext_resource type="Script" uid="uid://7laplj6m1gfl" path="res://Main.gd" id="1_r0du0"]
 [ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="2_fos0i"]
@@ -11,7 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://cx8aq5v45lu8s" path="res://scenes/Map2.tscn" id="6_3dxm6"]
 [ext_resource type="PackedScene" uid="uid://bwdwkuwuw1dad" path="res://components/Button.tscn" id="6_03owx"]
 [ext_resource type="PackedScene" uid="uid://cgqwmrnrk6sf4" path="res://scenes/BeachBall.tscn" id="8_03owx"]
-[ext_resource type="Script" uid="uid://dyld2phgnek6u" path="res://audio_controller.gd" id="9_20pc6"]
+[ext_resource type="Script" uid="uid://b4tslmwssyyui" path="res://scenes/audio_controller.gd" id="9_20pc6"]
 [ext_resource type="AudioStream" uid="uid://j1bars1auj4p" path="res://sounds/main-game-loop.mp3" id="9_wkp8b"]
 [ext_resource type="AudioStream" uid="uid://dbmgl1egx24j3" path="res://sounds/wind-sound-menu.mp3" id="11_fpfj3"]
 [ext_resource type="AudioStream" uid="uid://dinung1r1003k" path="res://sounds/button.mp3" id="12_sc1dx"]
@@ -214,6 +214,7 @@ text = "Pour démarrer la partie, restez dans le cercle"
 horizontal_alignment = 1
 
 [node name="SnowCounter" type="PanelContainer" parent="GameUIGroup"]
+visible = false
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0

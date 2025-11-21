@@ -14,3 +14,4 @@ func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
 
 		if collider and collider.is_in_group("Players"):
 			state.apply_impulse(state.get_contact_local_normal(i))
+			AudioController.play_ball_bounce()
