@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://b8hhnqsugykly" path="res://addons/phantom_camera/scripts/resources/camera_3d_resource.gd" id="5_3dxm6"]
 [ext_resource type="PackedScene" uid="uid://cx8aq5v45lu8s" path="res://scenes/Map2.tscn" id="6_3dxm6"]
 [ext_resource type="PackedScene" uid="uid://bwdwkuwuw1dad" path="res://components/Button.tscn" id="6_03owx"]
+[ext_resource type="PackedScene" uid="uid://cgqwmrnrk6sf4" path="res://scenes/BeachBall.tscn" id="8_03owx"]
 
 [sub_resource type="Resource" id="Resource_trn2v"]
 script = ExtResource("4_lgr22")
@@ -214,6 +215,7 @@ debug_color = Color(0, 0, 0, 0.41960785)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.860132, 0, 1.408144)
 script = ExtResource("3_cm0pq")
 snowflake_scene = ExtResource("4_fos0i")
+beach_ball_scene = ExtResource("8_03owx")
 spawn_delay_min = 0.3
 spawn_delay_max = 0.7
 

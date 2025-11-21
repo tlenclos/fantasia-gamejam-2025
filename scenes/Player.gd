@@ -81,5 +81,6 @@ func _apply_color() -> void:
 	material.albedo_color = color
 
 func _on_area_3d_body_entered(node: Node3D) -> void:
-	if multiplayer.is_server() and node.is_in_group("Snowflakes"):
-		(get_tree().root.get_node("Main") as Main).add_snow_to_player.rpc(int(self.name), node.get_path())
+	if multiplayer.is_server():
+		if node.is_in_group("Snowflakes"):
+			(get_tree().root.get_node("Main") as Main).add_snow_to_player.rpc(int(self.name), node.get_path())

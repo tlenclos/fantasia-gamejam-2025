@@ -1,4 +1,4 @@
-class_name Snowman extends Node3D
+class_name Snowman extends StaticBody3D
 
 @onready var step_7: Node3D = $Step7
 @onready var step_6: Node3D = $Step6
@@ -24,7 +24,7 @@ func _process(_delta: float) -> void:
 	if player:
 		var newPosition = player.position
 		newPosition.y = self.position.y
-		
+
 		if player.position.x != self.position.x:
 			look_at(newPosition)
 
@@ -46,6 +46,12 @@ func add_snow(amount: int = 1) -> void:
 	if (current_step == 7) and player:
 		(get_tree().root.get_node("Main") as Main).win_game.rpc(player.name)
 
+func delete_node(path: String) -> void:
+	var node = get_node_or_null(path)
+
+	if node != null:
+		node.queue_free()
+
 func reset() -> void:
 	current_step = 0
 	snow_count = 0
@@ -56,3 +62,8 @@ func reset() -> void:
 	step_5.visible = false
 	step_6.visible = false
 	step_7.visible = false
+
+func _on_area_3d_body_entered(node: Node3D) -> void:
+	if multiplayer.is_server():
+		if node.is_in_group("BeachBall"):
+			(get_tree().root.get_node("Main") as Main).reset_snowman.rpc(int(self.player.name), node.get_path())

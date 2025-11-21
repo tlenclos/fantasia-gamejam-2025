@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=4 uid="uid://bntcxvibf61dw"]
+[gd_scene load_steps=43 format=4 uid="uid://bntcxvibf61dw"]
 
 [ext_resource type="Script" uid="uid://bxah3ethd12so" path="res://scenes/Snowman.gd" id="1_up3e0"]
 
@@ -595,7 +595,15 @@ properties/1/path = NodePath(".:position")
 properties/1/spawn = true
 properties/1/replication_mode = 1
 
-[node name="Snowman" type="Node3D"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_wxfl0"]
+height = 1.0542221
+radius = 0.5595703
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_6m2of"]
+height = 0.920166
+radius = 0.3491211
+
+[node name="Snowman" type="StaticBody3D"]
 transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
 script = ExtResource("1_up3e0")
 
@@ -698,3 +706,16 @@ skeleton = NodePath("")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_ma8s1")
+
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.016716957, 0.49737272, -0.0020745597)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.033901244, 0)
+shape = SubResource("CylinderShape3D_wxfl0")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.47424316, 0)
+shape = SubResource("CylinderShape3D_6m2of")
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

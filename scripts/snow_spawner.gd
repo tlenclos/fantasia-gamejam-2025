@@ -1,6 +1,7 @@
 class_name SnowSpaner extends Node3D
 
 @export var snowflake_scene: PackedScene
+@export var beach_ball_scene: PackedScene
 
 @export var spawn_center: Vector3 = Vector3(0, 0, 5) # anchor point of the spawner with (x,y,z), z being the depth (forward/back)
 @export var spawn_area: Vector2 = Vector2(14, 8) # width (left/right)
@@ -9,6 +10,7 @@ class_name SnowSpaner extends Node3D
 @export var spawn_delay_min: float = 1
 @export var spawn_delay_max: float = 3
 
+var rng = RandomNumberGenerator.new()
 var timer: Timer
 var id = 0
 
@@ -28,13 +30,15 @@ func _on_spawn():
 		spawn_center.y + spawn_height,
 		spawn_center.z + randf_range(-spawn_area.y, spawn_area.y)
 	)
-	_spawn.rpc(pos, id)
+	var rand = rng.randf_range(0, 10.0)
+
+	_spawn.rpc(pos, id, rand >= 9.0)
 	id += 1
 
 func stop_spawning():
 	if multiplayer.is_server():
 		timer.stop()
-	
+
 	# Clear snowflakes for all players
 	_clear_snowflakes.rpc()
 
@@ -46,14 +50,21 @@ func _clear_snowflakes():
 			child.queue_free()
 
 @rpc("any_peer", "call_local")
-func _spawn(pos: Vector3, id: int):
+func _spawn(pos: Vector3, id: int, is_beach_ball: bool):
 	if not snowflake_scene:
 		return
-	var flake = snowflake_scene.instantiate()
-	add_child(flake)
-	flake.position = to_global(pos)
+
+	var object = null
+
+	if is_beach_ball:
+		object = beach_ball_scene.instantiate()
+	else:
+		object = snowflake_scene.instantiate()
+
+	add_child(object)
+	object.position = to_global(pos)
 	# force name here to be constant across player, this ensure that is has the same path within godot so we can sync deletion
-	flake.name = "snowflake_" + str(id)
+	object.name = "snowflake_" + str(id)
 
 	if multiplayer.is_server():
 		timer.wait_time = randf_range(spawn_delay_min, spawn_delay_max)

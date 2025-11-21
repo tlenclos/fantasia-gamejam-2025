@@ -60,10 +60,10 @@ func _on_host_button_pressed() -> void:
 
 func _on_join_official_server_button_pressed() -> void:
 	_join_server("fantasia-gamejam-2025.thibaultlenclos.fr")
-	
+
 func _on_join_localhost() -> void:
 	_join_server("localhost")
-	
+
 func _join_server(host: String) -> void:
 	error_label.text = ""
 
@@ -204,13 +204,18 @@ func end_game() -> void:
 @rpc("any_peer", "call_local")
 func add_snow_to_player(peer_id: int, snowflake_node_path: String) -> void:
 	get_snowman_by_peer_id(peer_id).add_snow()
-	delete_snowflake(snowflake_node_path)
+	delete_node(snowflake_node_path)
 
-func delete_snowflake(snowflake_node_path: String) -> void:
-	var snowflake = get_node_or_null(snowflake_node_path)
+@rpc("any_peer", "call_local")
+func reset_snowman(peer_id: int, snowflake_node_path: String) -> void:
+	get_snowman_by_peer_id(peer_id).reset()
+	delete_node(snowflake_node_path)
 
-	if snowflake != null:
-		snowflake.queue_free()
+func delete_node(path: String) -> void:
+	var node = get_node_or_null(path)
+
+	if node != null:
+		node.queue_free()
 
 func get_all_players() -> Array[Node]:
 	return get_tree().get_nodes_in_group("Players")
@@ -224,7 +229,7 @@ func get_snowman_by_peer_id(peer_id: int) -> Snowman:
 @rpc("any_peer", "call_local")
 func win_game(winner_peer_id: String) -> void:
 	end_game()
-	
+
 	if winner_peer_id == str(multiplayer.get_unique_id()):
 		notification.toast("Tu as gagné, bravo !!")
 	else:
