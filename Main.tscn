@@ -43,6 +43,13 @@ ambient_light_color = Color(0.50490636, 0.79795915, 0.946606, 1)
 volumetric_fog_enabled = true
 volumetric_fog_albedo = Color(0.6476397, 0.8462309, 0.95558697, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_trn2v"]
+bg_color = Color(0, 0, 0, 0.7921569)
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+
 [sub_resource type="TorusMesh" id="TorusMesh_3dxm6"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lgr22"]
@@ -197,6 +204,27 @@ theme_override_constants/separation = 15
 layout_mode = 2
 text = "Pour démarrer la partie, restez dans le cercle"
 horizontal_alignment = 1
+
+[node name="SnowCounter" type="PanelContainer" parent="GameUIGroup"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -212.0
+offset_top = -63.0
+offset_right = -17.0
+offset_bottom = -17.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_trn2v")
+
+[node name="Label" type="Label" parent="GameUIGroup/SnowCounter"]
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="StartGameCircle" type="MeshInstance3D" parent="."]
 transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 5.1742725, -1.4265858, 0.8577728)

@@ -10,6 +10,8 @@ var initialScale = Vector3(1, 1, 1)
 @export var color = Color(0, 0, 0): set = set_color
 @onready var body: MeshInstance3D = $Body
 
+var snowman: Snowman
+
 func _ready() -> void:
 	initialScale = scale
 
