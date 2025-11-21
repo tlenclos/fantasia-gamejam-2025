@@ -8,7 +8,7 @@ var initialScale = Vector3(1, 1, 1)
 @export var growingFactor = 0.5
 @export var reducingFactor = 0.01
 @export var color = Color(0, 0, 0): set = set_color
-@onready var body: MeshInstance3D = $Body
+@onready var body: Node3D = $Crab
 
 var snowman: Snowman
 
@@ -41,13 +41,13 @@ func _physics_process(delta: float) -> void:
 	if direction:
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
+		
+		# Rotate the player to face the movement direction
+		var target_rotation = atan2(direction.x, direction.z)
+		body.rotation.y = target_rotation
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)
-
-	# Rotate the player to face the movement direction
-	var target_rotation = atan2(direction.x, direction.z)
-	body.rotation.y = target_rotation
 
 	move_and_slide()
 
@@ -72,15 +72,18 @@ func _apply_color() -> void:
 	if not body or OS.has_feature("dedicated_server"):
 		return
 
-	var material = body.get_surface_override_material(0)
-	if not material:
-		if body.mesh and body.mesh.surface_get_material(0):
-			material = body.mesh.surface_get_material(0).duplicate()
-		else:
-			material = StandardMaterial3D.new()
-		body.set_surface_override_material(0, material)
+	
+	for child in body.get_children():
+		if child is MeshInstance3D and child.name != "Eye1" and child.name != "Eye2": 
+			var material = child.get_surface_override_material(0)
+			if not material:
+				if child.mesh and child.mesh.surface_get_material(0):
+					material = child.mesh.surface_get_material(0).duplicate()
+				else:
+					material = StandardMaterial3D.new()
+				child.set_surface_override_material(0, material)
 
-	material.albedo_color = color
+			material.albedo_color = color
 
 func _on_area_3d_body_entered(node: Node3D) -> void:
 	if multiplayer.is_server():

@@ -1,15 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://dbf5a5xch38l7"]
+[gd_scene load_steps=6 format=3 uid="uid://dbf5a5xch38l7"]
 
 [ext_resource type="Script" uid="uid://segbp6rkd2dd" path="res://scenes/Player.gd" id="1_xhfnw"]
+[ext_resource type="PackedScene" uid="uid://cqy5ly4tohk6l" path="res://scenes/Crab.tscn" id="2_3li8b"]
 [ext_resource type="PackedScene" uid="uid://div5xhfmjnms4" path="res://scenes/Bucket.glb" id="2_kpjcp"]
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_0rwas"]
-
-[sub_resource type="SphereMesh" id="SphereMesh_0rwas"]
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_kne1u"]
-
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0rwas"]
+height = 1.5159302
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_kpjcp"]
 properties/0/path = NodePath(".:position")
@@ -29,40 +25,24 @@ properties/3/replication_mode = 1
 script = ExtResource("1_xhfnw")
 metadata/spawn_path = NodePath("")
 
-[node name="Body" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.5, 0)
-mesh = SubResource("CapsuleMesh_0rwas")
-skeleton = NodePath("../CollisionShape3D")
+[node name="Crab" parent="." instance=ExtResource("2_3li8b")]
 
-[node name="Eye1" type="MeshInstance3D" parent="Body"]
-transform = Transform3D(0.48000002, 0, 0, 0, 0.5, 0, 0, 0, 0.3799454, 0.21259803, 0.42244935, 0.4177671)
-mesh = SubResource("SphereMesh_0rwas")
-skeleton = NodePath("../..")
-
-[node name="Eye2" type="MeshInstance3D" parent="Body"]
-transform = Transform3D(0.48000002, 0, 0, 0, 0.5, 0, 0, 0, 0.3799454, -0.32160717, 0.42244935, 0.4177671)
-mesh = SubResource("SphereMesh_0rwas")
-skeleton = NodePath("../..")
-
-[node name="Arm" type="MeshInstance3D" parent="Body"]
-transform = Transform3D(0.12749997, 9.6530695e-09, -0.15588456, 0.22083645, -5.5732006e-09, 0.08999999, -3.1554436e-30, -0.25499994, -7.86805e-09, -0.57837325, 0, 0.16660643)
-mesh = SubResource("CapsuleMesh_kne1u")
-
-[node name="Bucket" parent="Body" instance=ExtResource("2_kpjcp")]
+[node name="Bucket" parent="Crab" instance=ExtResource("2_kpjcp")]
 physics_interpolation_mode = 2
-transform = Transform3D(5.07, 0, 0, 0, 5.07, 0, 0, 0, 5.07, -0.5641046, -0.21475846, 0.56993526)
+transform = Transform3D(-1.4720832, 0, -2.0637848, 0, 2.535, 0, 2.0637848, 0, -1.4720832, -0.6061386, 0.49955285, 0.079963595)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.5, 0)
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, -0.18235609, 0.57347023, -0.19144338)
 shape = SubResource("CapsuleShape3D_0rwas")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_kpjcp")
 
 [node name="CollectArea" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.41355598)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CollectArea"]
-transform = Transform3D(1.285, 0, 0, 0, 1.285, 0, 0, 0, 1.285, 0, 0.5, 0)
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="CollectArea"]
+transform = Transform3D(-5.2453668e-08, -1.2, 0, 1.2, -5.2453668e-08, 0, 0, 0, 1.2, -0.18235609, 0.57347023, -0.60499936)
 shape = SubResource("CapsuleShape3D_0rwas")
 
 [connection signal="body_entered" from="CollectArea" to="." method="_on_area_3d_body_entered"]
