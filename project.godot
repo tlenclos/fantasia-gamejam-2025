@@ -22,7 +22,8 @@ AudioController="*res://scenes/AudioController.tscn"
 
 [display]
 
-window/dpi/allow_hidpi=false
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
 
 [editor_plugins]
 
