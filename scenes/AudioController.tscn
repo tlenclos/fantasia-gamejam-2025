@@ -1,0 +1,36 @@
+[gd_scene load_steps=9 format=3 uid="uid://byc6yl70cwiic"]
+
+[ext_resource type="Script" uid="uid://b4tslmwssyyui" path="res://scenes/audio_controller.gd" id="1_kannn"]
+[ext_resource type="AudioStream" uid="uid://j1bars1auj4p" path="res://sounds/main-game-loop.mp3" id="2_lnw0r"]
+[ext_resource type="AudioStream" uid="uid://dbmgl1egx24j3" path="res://sounds/wind-sound-menu.mp3" id="3_ucg74"]
+[ext_resource type="AudioStream" uid="uid://dinung1r1003k" path="res://sounds/button.mp3" id="4_nd184"]
+[ext_resource type="AudioStream" uid="uid://b0p8cbobugvpl" path="res://sounds/got-snowflake.mp3" id="5_lax3g"]
+[ext_resource type="AudioStream" uid="uid://bb5dnhe5hfe0e" path="res://sounds/jump.mp3" id="6_l55on"]
+[ext_resource type="AudioStream" uid="uid://ddclwl3nwtk2h" path="res://sounds/win.mp3" id="7_lge8b"]
+[ext_resource type="AudioStream" uid="uid://cn8m2drwbo671" path="res://sounds/ball-bounce.mp3" id="8_oyflg"]
+
+[node name="AudioController" type="Node3D"]
+script = ExtResource("1_kannn")
+
+[node name="MainMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_lnw0r")
+parameters/looping = false
+
+[node name="MenuMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_ucg74")
+parameters/looping = false
+
+[node name="ButtonClick" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_nd184")
+
+[node name="GotSnowflake" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_lax3g")
+
+[node name="Jump" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_l55on")
+
+[node name="Win" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_lge8b")
+
+[node name="BallBounce" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_oyflg")

@@ -34,6 +34,8 @@ const playersColor = [
 
 func _ready() -> void:
 	snow_counter_display.hide()
+	AudioController.play_menu_music()
+	
 	if isDedicatedServer:
 		print("Starting dedicated server on port ", PORT)
 		create_server()
@@ -65,6 +67,7 @@ func _on_host_button_pressed() -> void:
 	game_ui.show()
 	create_server()
 	add_player(multiplayer.get_unique_id())
+	AudioController.start_game_music()
 
 func _on_join_official_server_button_pressed() -> void:
 	_join_server("fantasia-gamejam-2025.thibaultlenclos.fr")
@@ -84,6 +87,7 @@ func _join_server(host: String) -> void:
 	multiplayer.multiplayer_peer = enet_peer
 	multiplayer.connected_to_server.connect(_on_connected_ok)
 	multiplayer.connection_failed.connect(_on_connected_fail)
+	AudioController.start_game_music()
 
 func _on_connected_ok() -> void:
 	print("Successfully connected to server")
@@ -217,6 +221,7 @@ func end_game() -> void:
 func add_snow_to_player(peer_id: int, snowflake_node_path: String) -> void:
 	get_snowman_by_peer_id(peer_id).add_snow()
 	delete_node(snowflake_node_path)
+	AudioController.play_got_snowflake()
 
 @rpc("any_peer", "call_local")
 func reset_snowman(peer_id: int, snowflake_node_path: String) -> void:
@@ -247,6 +252,7 @@ func win_game(winner_peer_id: String) -> void:
 
 	if winner_peer_id == str(multiplayer.get_unique_id()):
 		notification.toast("Tu as gagné, bravo !!")
+		AudioController.play_win()
 	else:
 		notification.toast("Déso t'as perdu")
 

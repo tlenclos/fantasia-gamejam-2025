@@ -13,7 +13,8 @@ func _ready():
 func _on_button_down():
 	if tween: tween.kill()
 	scale = Vector2(0.9, 0.9)
-
+	AudioController.play_button_click()
+	
 func _on_button_up():
 	tween = create_tween().set_ease(Tween.EASE_OUT)
 	tween.set_trans(Tween.TRANS_SPRING)

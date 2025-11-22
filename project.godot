@@ -11,13 +11,14 @@ config_version=5
 [application]
 
 config/name="Fantasia Gamejam 2025"
-run/main_scene="uid://yjutnsht3p30"
+run/main_scene="uid://cup3o2rw2fqu2"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [autoload]
 
 PhantomCameraManager="*res://addons/phantom_camera/scripts/managers/phantom_camera_manager.gd"
+AudioController="*res://scenes/AudioController.tscn"
 
 [editor_plugins]
 

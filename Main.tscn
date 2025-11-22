@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://yjutnsht3p30"]
+[gd_scene load_steps=32 format=3 uid="uid://cup3o2rw2fqu2"]
 
 [ext_resource type="Script" uid="uid://7laplj6m1gfl" path="res://Main.gd" id="1_r0du0"]
 [ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="2_fos0i"]
@@ -11,6 +11,14 @@
 [ext_resource type="PackedScene" uid="uid://cx8aq5v45lu8s" path="res://scenes/Map2.tscn" id="6_3dxm6"]
 [ext_resource type="PackedScene" uid="uid://bwdwkuwuw1dad" path="res://components/Button.tscn" id="6_03owx"]
 [ext_resource type="PackedScene" uid="uid://cgqwmrnrk6sf4" path="res://scenes/BeachBall.tscn" id="8_03owx"]
+[ext_resource type="Script" uid="uid://b4tslmwssyyui" path="res://scenes/audio_controller.gd" id="9_20pc6"]
+[ext_resource type="AudioStream" uid="uid://j1bars1auj4p" path="res://sounds/main-game-loop.mp3" id="9_wkp8b"]
+[ext_resource type="AudioStream" uid="uid://dbmgl1egx24j3" path="res://sounds/wind-sound-menu.mp3" id="11_fpfj3"]
+[ext_resource type="AudioStream" uid="uid://dinung1r1003k" path="res://sounds/button.mp3" id="12_sc1dx"]
+[ext_resource type="AudioStream" uid="uid://b0p8cbobugvpl" path="res://sounds/got-snowflake.mp3" id="13_kjvhd"]
+[ext_resource type="AudioStream" uid="uid://bb5dnhe5hfe0e" path="res://sounds/jump.mp3" id="14_5tuhn"]
+[ext_resource type="AudioStream" uid="uid://ddclwl3nwtk2h" path="res://sounds/win.mp3" id="15_2gh4u"]
+[ext_resource type="AudioStream" uid="uid://cn8m2drwbo671" path="res://sounds/ball-bounce.mp3" id="16_devvj"]
 
 [sub_resource type="Resource" id="Resource_trn2v"]
 script = ExtResource("4_lgr22")
@@ -206,6 +214,7 @@ text = "Pour démarrer la partie, restez dans le cercle"
 horizontal_alignment = 1
 
 [node name="SnowCounter" type="PanelContainer" parent="GameUIGroup"]
+visible = false
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
@@ -288,6 +297,37 @@ debug_color = Color(0.9494148, 2.2140146e-06, 0.57121134, 1)
 transform = Transform3D(0.21043782, 0, -0.9776074, 0, 1, 0, 0.9776074, 0, 0.21043782, 4.8694506, 3.4485474, -18.138496)
 shape = SubResource("BoxShape3D_trn2v")
 debug_color = Color(0.9494148, 2.2140146e-06, 0.57121134, 1)
+
+[node name="AudioController" type="Node3D" parent="."]
+script = ExtResource("9_20pc6")
+
+[node name="MainMusic" type="AudioStreamPlayer" parent="AudioController"]
+stream = ExtResource("9_wkp8b")
+parameters/looping = false
+
+[node name="MenuMusic" type="AudioStreamPlayer" parent="AudioController"]
+stream = ExtResource("11_fpfj3")
+parameters/looping = false
+
+[node name="ButtonClick" type="AudioStreamPlayer" parent="AudioController"]
+stream = ExtResource("12_sc1dx")
+parameters/looping = false
+
+[node name="GotSnowflake" type="AudioStreamPlayer" parent="AudioController"]
+stream = ExtResource("13_kjvhd")
+parameters/looping = false
+
+[node name="Jump" type="AudioStreamPlayer" parent="AudioController"]
+stream = ExtResource("14_5tuhn")
+parameters/looping = false
+
+[node name="Win" type="AudioStreamPlayer" parent="AudioController"]
+stream = ExtResource("15_2gh4u")
+parameters/looping = false
+
+[node name="BallBounce" type="AudioStreamPlayer" parent="AudioController"]
+stream = ExtResource("16_devvj")
+parameters/looping = false
 
 [connection signal="pressed" from="MenuGroup/MainMenu/MarginContainer/VBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
 [connection signal="pressed" from="MenuGroup/MainMenu/MarginContainer/VBoxContainer/JoinLocalhostButton" to="." method="_on_join_localhost"]
