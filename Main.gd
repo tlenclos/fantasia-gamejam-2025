@@ -50,24 +50,27 @@ func _physics_process(_delta: float) -> void:
 	if _get_current_player():
 		update_snow_counter_display(_get_current_player().snowman.current_step, _get_current_player().snowman.total_step_needed)
 
-func create_server() -> void:
+func create_server() -> bool:
 	var error = enet_peer.create_server(PORT)
 	if error != OK:
 		print('Error starting server: ', error)
-		return
+		return false
 
 	multiplayer.multiplayer_peer = enet_peer
 	multiplayer.peer_connected.connect(add_player)
 	multiplayer.peer_disconnected.connect(remove_player)
 	isServer = true
+	
+	return true
 
 func _on_host_button_pressed() -> void:
-	error_label.text = ""
-	main_menu.hide()
-	game_ui.show()
-	create_server()
-	add_player(multiplayer.get_unique_id())
-	AudioController.start_game_music()
+	if create_server():
+		error_label.text = ""
+		main_menu.hide()
+		game_ui.show()
+		create_server()
+		add_player(multiplayer.get_unique_id())
+		AudioController.start_game_music()
 
 func _on_join_official_server_button_pressed() -> void:
 	_join_server("fantasia-gamejam-2025.thibaultlenclos.fr")
@@ -137,6 +140,7 @@ func spawn_player(peer_id: int, spawn_path: String, color: Color):
 
 	player.snowman = snowman
 	player.set_color(color)
+	snowman.set_color(color)
 
 	if not isDedicatedServer:
 		phantom_camera_3d.append_follow_targets(player)
@@ -178,7 +182,7 @@ func get_spawn_position() -> Node:
 	var free_spawn = [];
 
 	for spawn in spawns:
-		if spawn.get_meta("player") == null:
+		if spawn.get_meta("player", null) == null:
 			free_spawn.append(spawn)
 
 	if free_spawn.size() == 0:
@@ -197,7 +201,7 @@ func start_game() -> void:
 		get_snowman_by_peer_id(int(player.name)).reset()
 
 	for i in range(game_timer, 0, -1):
-		game_ui_bottom_label.text = "Démarrage dans : %ds" % i
+		notification.toast("Démarrage dans : %ds" % i)
 		await get_tree().create_timer(1).timeout
 
 	game_ui.hide();
@@ -241,7 +245,7 @@ func get_player_by_peer_id(peer_id: int) -> Player:
 	return get_node_or_null(str(peer_id))
 
 func _get_current_player() -> Player:
-	if multiplayer.get_unique_id():
+	if multiplayer.has_multiplayer_peer() and multiplayer.get_unique_id():
 		return get_player_by_peer_id(multiplayer.get_unique_id())
 	else:
 		return null
@@ -262,7 +266,7 @@ func win_game(winner_peer_id: String) -> void:
 func update_snow_counter_display(snow_count: int, max_snow_count: int) -> void:
 	var display_text = ""
 	for i in range(max_snow_count):
-		if i<snow_count:
+		if i < snow_count:
 			display_text += "❄️ "
 		else:
 			display_text += "❆ "

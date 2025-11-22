@@ -20,6 +20,10 @@ config/icon="res://icon.svg"
 PhantomCameraManager="*res://addons/phantom_camera/scripts/managers/phantom_camera_manager.gd"
 AudioController="*res://scenes/AudioController.tscn"
 
+[display]
+
+window/dpi/allow_hidpi=false
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/phantom_camera/plugin.cfg")

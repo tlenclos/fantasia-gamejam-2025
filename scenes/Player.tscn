@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://div5xhfmjnms4" path="res://scenes/Bucket.glb" id="2_kpjcp"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0rwas"]
+radius = 0.41748047
 height = 1.5159302
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_kpjcp"]
@@ -32,7 +33,7 @@ physics_interpolation_mode = 2
 transform = Transform3D(-2.2792594, 0, -3.1954038, 0, 3.925, 0, 3.1954038, 0, -2.2792594, -0.59107506, 0.4205835, 0.16539451)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, -0.18235609, 0.57347023, -0.19144338)
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, -0.18235609, 0.57347023, -0.20384711)
 shape = SubResource("CapsuleShape3D_0rwas")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
@@ -40,6 +41,7 @@ replication_config = SubResource("SceneReplicationConfig_kpjcp")
 
 [node name="CollectArea" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.41355598)
+visible = false
 
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="CollectArea"]
 transform = Transform3D(-5.2453668e-08, -1.2, 0, 1.2, -5.2453668e-08, 0, 0, 0, 1.2, -0.18235609, 0.57347023, -0.60499936)

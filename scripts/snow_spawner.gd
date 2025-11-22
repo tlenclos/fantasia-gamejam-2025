@@ -2,17 +2,32 @@ class_name SnowSpaner extends Node3D
 
 @export var snowflake_scene: PackedScene
 @export var beach_ball_scene: PackedScene
-
-@export var spawn_center: Vector3 = Vector3(0, 0, 5) # anchor point of the spawner with (x,y,z), z being the depth (forward/back)
-@export var spawn_area: Vector2 = Vector2(14, 8) # width (left/right)
-@export var spawn_height: float = 20.0 # in the sky (up/down)
-
 @export var spawn_delay_min: float = 1
 @export var spawn_delay_max: float = 3
+
+@onready var spawn_area_zone: MeshInstance3D = $SpawnAreaZone
 
 var rng = RandomNumberGenerator.new()
 var timer: Timer
 var id = 0
+# calculated from mesh
+var spawn_area: Vector2 = Vector2(14, 8)
+var spawn_height: float = 20.0
+var spawn_center: Vector3 = Vector3.ZERO
+
+func _ready():
+	_calculate_spawn_area_from_mesh()
+
+func _calculate_spawn_area_from_mesh():
+	if spawn_area_zone and spawn_area_zone.mesh:
+		var plane_mesh = spawn_area_zone.mesh
+		var mesh_size = plane_mesh.size
+		var mesh_transform = spawn_area_zone.global_transform
+		var mesh_position = spawn_area_zone.position
+		
+		spawn_area = Vector2(mesh_size.x / 2.0, mesh_size.y / 2.0)
+		spawn_height = mesh_position.y
+		spawn_center = mesh_position
 
 func start_spawning():
 	if multiplayer.is_server():
@@ -46,7 +61,7 @@ func stop_spawning():
 func _clear_snowflakes():
 	# Clear all snowflakes
 	for child in get_children():
-		if child.is_in_group("Snowflakes"):
+		if child.is_in_group("Snowflakes") or child.is_in_group("BeachBall"):
 			child.queue_free()
 
 @rpc("any_peer", "call_local")

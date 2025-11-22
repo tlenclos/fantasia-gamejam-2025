@@ -72,7 +72,6 @@ func _apply_color() -> void:
 	# this can be called before _ready() during replication by MultiplayerSpawner
 	if not body or OS.has_feature("dedicated_server"):
 		return
-
 	
 	for child in body.get_children():
 		if child is MeshInstance3D and child.name != "Eye1" and child.name != "Eye2": 

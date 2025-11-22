@@ -8,7 +8,7 @@ class_name Snowman extends StaticBody3D
 @onready var step_2: Node3D = $Step2
 @onready var step_1: Node3D = $Step1
 
-@export var snow_amount_for_next_step: int = 1
+@export var snow_amount_for_next_step: int = 2
 @export var current_step: int = 0
 
 var player: Player
@@ -34,6 +34,10 @@ func add_snow(amount: int = 1) -> void:
 	if snow_count >= snow_amount_for_next_step and current_step < total_step_needed:
 		current_step += 1
 		snow_count = 0
+
+	print("snow_count " + str(snow_count))
+	print("current_step " + str(current_step))
+	print("total_step_needed " + str(total_step_needed))
 
 	step_1.visible = current_step >= 0
 	step_2.visible = current_step >= 1
@@ -63,6 +67,22 @@ func reset() -> void:
 	step_5.visible = false
 	step_6.visible = false
 	step_7.visible = false
+
+func set_color(color: Color) -> void:
+	# this can be called before _ready() during replication by MultiplayerSpawner
+	if not step_1 or OS.has_feature("dedicated_server"):
+		return
+		
+	for child in step_1.get_children():
+		var material = child.get_surface_override_material(0)
+		if not material:
+			if child.mesh and child.mesh.surface_get_material(0):
+				material = child.mesh.surface_get_material(0).duplicate()
+			else:
+				material = StandardMaterial3D.new()
+			child.set_surface_override_material(0, material)
+
+		material.albedo_color = color
 
 func _on_area_3d_body_entered(node: Node3D) -> void:
 	if multiplayer.is_server():

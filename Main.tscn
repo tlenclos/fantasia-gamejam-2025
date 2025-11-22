@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://cup3o2rw2fqu2"]
+[gd_scene load_steps=34 format=3 uid="uid://cup3o2rw2fqu2"]
 
 [ext_resource type="Script" uid="uid://7laplj6m1gfl" path="res://Main.gd" id="1_r0du0"]
 [ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="2_fos0i"]
@@ -67,6 +67,14 @@ albedo_color = Color(1, 1, 1, 0.5)
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_3dxm6"]
 radius = 1.0
 
+[sub_resource type="PlaneMesh" id="PlaneMesh_spawner"]
+size = Vector2(18.66, 9.005)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_spawner"]
+transparency = 1
+cull_mode = 2
+albedo_color = Color(0.5, 0.8, 1, 0.3)
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_trn2v"]
 size = Vector3(1, 8.036743, 31.7583)
 
@@ -97,7 +105,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.7821865, -0.60848534, -9.46
 gizmo_extents = 1.0
 
 [node name="Spawn6" type="Marker3D" parent="Spawn" groups=["SpawnPositions"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.211, -0.7198522, 14.812268)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6919537, -0.52313197, 13.384941)
 gizmo_extents = 1.0
 
 [node name="Camera3D" type="Camera3D" parent="."]
@@ -214,14 +222,13 @@ text = "Pour démarrer la partie, restez dans le cercle"
 horizontal_alignment = 1
 
 [node name="SnowCounter" type="PanelContainer" parent="GameUIGroup"]
-visible = false
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -212.0
-offset_top = -63.0
+offset_left = -333.0
+offset_top = -61.0
 offset_right = -17.0
 offset_bottom = -17.0
 grow_horizontal = 0
@@ -232,6 +239,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_trn2v")
 
 [node name="Label" type="Label" parent="GameUIGroup/SnowCounter"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 30
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -255,6 +263,13 @@ snowflake_scene = ExtResource("4_fos0i")
 beach_ball_scene = ExtResource("8_03owx")
 spawn_delay_min = 0.3
 spawn_delay_max = 0.7
+
+[node name="SpawnAreaZone" type="MeshInstance3D" parent="SnowSpawner"]
+transform = Transform3D(0.19936794, 0, 0.9799247, 0, 1, 0, -0.9799247, 0, 0.19936794, -0.6551461, 20.000002, -0.22952855)
+visible = false
+layers = 2
+mesh = SubResource("PlaneMesh_spawner")
+surface_material_override/0 = SubResource("StandardMaterial3D_spawner")
 
 [node name="Map" parent="." instance=ExtResource("6_3dxm6")]
 transform = Transform3D(0.38651776, 0, 0.922282, 0, 1, 0, -0.922282, 0, 0.38651776, -0.0030755997, -0.02879715, -0.010669708)
