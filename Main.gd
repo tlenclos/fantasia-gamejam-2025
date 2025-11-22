@@ -241,7 +241,10 @@ func get_player_by_peer_id(peer_id: int) -> Player:
 	return get_node_or_null(str(peer_id))
 
 func _get_current_player() -> Player:
-	return get_player_by_peer_id(multiplayer.get_unique_id())
+	if multiplayer.get_unique_id():
+		return get_player_by_peer_id(multiplayer.get_unique_id())
+	else:
+		return null
 
 func get_snowman_by_peer_id(peer_id: int) -> Snowman:
 	return get_node_or_null("Snowman" + str(peer_id))

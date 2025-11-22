@@ -14,7 +14,7 @@ properties/0/replication_mode = 1
 properties/1/path = NodePath(".:scale")
 properties/1/spawn = true
 properties/1/replication_mode = 1
-properties/2/path = NodePath("Body:rotation")
+properties/2/path = NodePath("Crab:rotation")
 properties/2/spawn = true
 properties/2/replication_mode = 1
 properties/3/path = NodePath(".:color")
@@ -29,7 +29,7 @@ metadata/spawn_path = NodePath("")
 
 [node name="Bucket" parent="Crab" instance=ExtResource("2_kpjcp")]
 physics_interpolation_mode = 2
-transform = Transform3D(-1.4720832, 0, -2.0637848, 0, 2.535, 0, 2.0637848, 0, -1.4720832, -0.6061386, 0.49955285, 0.079963595)
+transform = Transform3D(-2.2792594, 0, -3.1954038, 0, 3.925, 0, 3.1954038, 0, -2.2792594, -0.59107506, 0.4205835, 0.16539451)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, -0.18235609, 0.57347023, -0.19144338)
