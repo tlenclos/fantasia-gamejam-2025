@@ -2,7 +2,6 @@ class_name Player extends CharacterBody3D
 
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
-var isGrowing = false
 var initialScale = Vector3(1, 1, 1)
 
 @export var growingFactor = 0.5
@@ -17,11 +16,6 @@ func _ready() -> void:
 
 func _enter_tree() -> void:
 	set_multiplayer_authority(str(name).to_int())
-
-func _input(event: InputEvent) -> void:
-	if not is_multiplayer_authority(): return
-	if event is InputEventMouseButton and event.is_pressed():
-		grow()
 
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority(): return
@@ -51,19 +45,7 @@ func _physics_process(delta: float) -> void:
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 
 	move_and_slide()
-
-	# Ungrow
-	if isGrowing:
-		scale -= Vector3(reducingFactor, reducingFactor, reducingFactor)
-		if scale.x < initialScale.x:
-			isGrowing = false
-
-func grow() -> void:
-	isGrowing = true
-	if scale.x > 2: return
-
-	scale += Vector3(growingFactor, growingFactor, growingFactor)
-
+	
 func set_color(new_color: Color) -> void:
 	color = new_color
 	_apply_color()
