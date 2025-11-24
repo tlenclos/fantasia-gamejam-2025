@@ -13,7 +13,10 @@ config_version=5
 config/name="Fantasia Gamejam 2025"
 run/main_scene="uid://cup3o2rw2fqu2"
 config/features=PackedStringArray("4.5", "GL Compatibility")
+boot_splash/use_filter=false
+boot_splash/image="res://splash.png"
 config/icon="res://icon.png"
+boot_splash/minimum_display_time=3000
 
 [autoload]
 
