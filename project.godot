@@ -11,9 +11,10 @@ config_version=5
 [application]
 
 config/name="Fantasia Gamejam 2025"
-run/main_scene="uid://cup3o2rw2fqu2"
+run/main_scene="uid://bqbq8eendbibu"
 config/features=PackedStringArray("4.5", "GL Compatibility")
-config/icon="res://icon.svg"
+boot_splash/show_image=false
+config/icon="res://icon.png"
 
 [autoload]
 
