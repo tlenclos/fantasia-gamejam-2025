@@ -83,3 +83,30 @@ jobs:
           draft: false
           prerelease: false
 
+      - name: Publish Windows build to itch.io
+        uses: yeslayla/butler-publish-itchio-action@master
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+          CHANNEL: windows
+          ITCH_GAME: une-journee-a-la-plage
+          ITCH_USER: tlenclos
+          PACKAGE: release-artifacts/FantasiaGamejam2025-Windows.exe
+
+      - name: Publish Linux build to itch.io
+        uses: yeslayla/butler-publish-itchio-action@master
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+          CHANNEL: linux
+          ITCH_GAME: une-journee-a-la-plage
+          ITCH_USER: tlenclos
+          PACKAGE: release-artifacts/FantasiaGamejam2025-Linux.x86_64
+
+      - name: Publish macOS build to itch.io
+        uses: yeslayla/butler-publish-itchio-action@master
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+          CHANNEL: mac
+          ITCH_GAME: une-journee-a-la-plage
+          ITCH_USER: tlenclos
+          PACKAGE: release-artifacts/FantasiaGamejam2025-macOS.zip
+
